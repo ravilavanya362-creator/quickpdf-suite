@@ -557,7 +557,14 @@ export default function FreeConvertProSuite() {
                   <ChevronDown className="w-4 h-4 opacity-80" />
                   <input type="file" multiple={currentTool.id === 'jpg-to-pdf' || currentTool.id === 'image-to-pdf'} accept={currentTool.acceptMime} onChange={(e) => { setFiles(e.target.files); setStatusMsg(''); }} className="hidden" />
                 </label>
-                <p className="text-[11px] text-slate-500 mt-3 font-medium">Max file size: Unlimited (Client-Side execution)</p>
+                <p className="text-[11px] text-slate-500 mt-2 max-w-xs mx-auto leading-relaxed text-center">
+  By proceeding, you confirm you own the rights to the files you upload and agree to our{' '}
+  <button onClick={() => setModal('terms')} className="text-indigo-400 hover:underline">
+    Terms of Use
+  </button>
+  .
+</p>
+
                 {files && files.length > 0 && (
                   <div className="mt-3 p-2 bg-indigo-950/60 border border-indigo-500/30 text-indigo-300 text-xs font-semibold rounded-xl">
                     ✓ {files.length} file(s) selected ({files[0].name})
