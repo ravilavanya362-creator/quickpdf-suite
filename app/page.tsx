@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo } from 'react';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { 
   Search, ArrowLeft, ChevronDown, ChevronUp, Settings, 
@@ -20,47 +20,41 @@ interface Tool {
 }
 
 const ALL_TOOLS: Tool[] = [
-  // 1. VIDEO CONVERTER
+  // Video
   { id: 'mp4-converter', name: 'MP4 Converter', title: 'MP4 Video Converter', desc: 'Convert video files to standard playable MP4.', cat: 'Video', targetExt: 'MP4', acceptMime: 'video/*' },
   { id: 'video-to-gif', name: 'Video to GIF', title: 'Video to GIF Converter', desc: 'Extract high-quality animated GIF frames from video.', cat: 'Video', targetExt: 'GIF', acceptMime: 'video/*' },
   { id: 'mov-to-mp4', name: 'MOV to MP4', title: 'MOV to MP4 Converter', desc: 'Convert QuickTime MOV videos to web MP4 format.', cat: 'Video', targetExt: 'MP4', acceptMime: 'video/*' },
   { id: 'video-converter', name: 'Video Converter', title: 'Universal Video Converter', desc: 'Optimize & re-encode video format for all devices.', cat: 'Video', targetExt: 'MP4', acceptMime: 'video/*' },
-
-  // 2. AUDIO CONVERTER
+  // Audio
   { id: 'mp3-converter', name: 'MP3 Converter', title: 'MP3 Audio Converter', desc: 'Convert audio files into high-clarity playable MP3/WAV.', cat: 'Audio', targetExt: 'MP3', acceptMime: 'audio/*,video/*' },
   { id: 'mp4-to-mp3', name: 'MP4 to MP3', title: 'MP4 to MP3 Extractor', desc: 'Extract pure sound stream from MP4 video files.', cat: 'Audio', targetExt: 'MP3', acceptMime: 'video/mp4,video/*' },
   { id: 'video-to-mp3', name: 'Video to MP3', title: 'Video to MP3 Converter', desc: 'Rip background audio from any video format.', cat: 'Audio', targetExt: 'MP3', acceptMime: 'video/*' },
   { id: 'audio-converter', name: 'Audio Converter', title: 'Universal Audio Converter', desc: 'Transcode audio into lossless playable audio track.', cat: 'Audio', targetExt: 'WAV', acceptMime: 'audio/*' },
-
-  // 3. IMAGE CONVERTER
+  // Image
   { id: 'jpg-to-pdf', name: 'JPG to PDF', title: 'JPG to PDF Converter', desc: 'Convert JPG/PNG images into high-resolution PDF document.', cat: 'Image', targetExt: 'PDF', acceptMime: 'image/*' },
   { id: 'pdf-to-jpg', name: 'PDF to JPG', title: 'PDF to JPG Converter', desc: 'Render and extract pages from PDF into sharp JPG images.', cat: 'Image', targetExt: 'JPG', acceptMime: 'application/pdf,image/*' },
   { id: 'heic-to-jpg', name: 'HEIC to JPG', title: 'HEIC to JPG Converter', desc: 'Convert Apple HEIC photos into universal JPG images.', cat: 'Image', targetExt: 'JPG', acceptMime: 'image/*,.heic' },
   { id: 'image-to-pdf', name: 'Image to PDF', title: 'Image to PDF Maker', desc: 'Merge multiple pictures into a single multi-page PDF.', cat: 'Image', targetExt: 'PDF', acceptMime: 'image/*' },
   { id: 'image-converter', name: 'Image Converter', title: 'Universal Image Converter', desc: 'Convert images to JPG, PNG, or WebP with compression.', cat: 'Image', targetExt: 'JPG', acceptMime: 'image/*' },
-
-  // 4. DOCUMENT & EBOOK
+  // Document & Ebook
   { id: 'pdf-to-word', name: 'PDF to WORD', title: 'PDF to Word Converter', desc: 'Convert PDF files into formatted Word documents.', cat: 'Document', targetExt: 'DOC', acceptMime: 'application/pdf' },
   { id: 'epub-to-pdf', name: 'EPUB to PDF', title: 'EPUB to PDF Converter', desc: 'Convert EPUB eBooks into readable PDF files.', cat: 'Document', targetExt: 'PDF', acceptMime: '.epub,text/plain,application/epub+zip' },
   { id: 'epub-to-mobi', name: 'EPUB to MOBI', title: 'EPUB to MOBI Converter', desc: 'Convert eBooks into MOBI format for Amazon Kindle.', cat: 'Document', targetExt: 'MOBI', acceptMime: '.epub,application/epub+zip' },
   { id: 'document-converter', name: 'Document Converter', title: 'Universal Document Converter', desc: 'Convert text, markdown, and ebooks into printable PDF.', cat: 'Document', targetExt: 'PDF', acceptMime: '.txt,.doc,.docx,.epub,text/plain' },
-
-  // 5. ARCHIVE & TIME
+  // Archive & Time
   { id: 'rar-to-zip', name: 'RAR to Zip', title: 'RAR to ZIP Converter', desc: 'Convert compressed RAR archive into universal ZIP file.', cat: 'Archive', targetExt: 'ZIP', acceptMime: '.rar,application/x-rar-compressed,application/octet-stream' },
   { id: 'pst-to-est', name: 'PST to EST', title: 'PST to EST Time Converter', desc: 'Convert Pacific Standard Time (PST) to Eastern Standard Time (EST).', cat: 'Archive', targetExt: 'TXT', acceptMime: '', isInteractive: true },
   { id: 'cst-to-est', name: 'CST to EST', title: 'CST to EST Time Converter', desc: 'Convert Central Standard Time (CST) to Eastern Standard Time (EST).', cat: 'Archive', targetExt: 'TXT', acceptMime: '', isInteractive: true },
   { id: 'archive-converter', name: 'Archive Converter', title: 'Archive Format Converter', desc: 'Convert archives and packages into standard ZIP container.', cat: 'Archive', targetExt: 'ZIP', acceptMime: '.tar,.gz,.rar,.7z,application/octet-stream' },
-
-  // 6. UNIT CONVERTER
+  // Unit Converter
   { id: 'lbs-to-kg', name: 'Lbs to Kg', title: 'Pounds to Kilograms Converter', desc: 'Convert weight from Imperial Pounds (lbs) to Metric Kilograms (kg).', cat: 'Unit', targetExt: 'TXT', acceptMime: '', isInteractive: true },
   { id: 'kg-to-lbs', name: 'Kg to Lbs', title: 'Kilograms to Pounds Converter', desc: 'Convert weight from Metric Kilograms (kg) to Imperial Pounds (lbs).', cat: 'Unit', targetExt: 'TXT', acceptMime: '', isInteractive: true },
   { id: 'feet-to-meters', name: 'Feet to Meters', title: 'Feet to Meters Converter', desc: 'Convert length and height from Feet (ft) to Meters (m).', cat: 'Unit', targetExt: 'TXT', acceptMime: '', isInteractive: true },
   { id: 'unit-converter', name: 'Unit Converter', title: 'Universal Unit Converter', desc: 'Instant conversion between multiple standard units.', cat: 'Unit', targetExt: 'TXT', acceptMime: '', isInteractive: true },
-
-  // 7. WEB APPS
-  { id: 'collage-maker', name: 'Collage Maker', title: 'Photo Collage Maker', desc: 'Combine 2 to 4 photos side-by-side into a beautiful grid collage.', cat: 'WebApps', targetExt: 'JPG', acceptMime: 'image/*' },
+  // Web Apps
+  { id: 'collage-maker', name: 'Collage Maker', title: 'Multi-Photo Collage Grid Maker', desc: 'Combine 2 to 9 photos into an auto-arranged collage grid.', cat: 'WebApps', targetExt: 'JPG', acceptMime: 'image/*' },
   { id: 'image-resizer', name: 'Image Resizer', title: 'Image Dimension Resizer', desc: 'Scale image width and height with custom percentage scaling.', cat: 'WebApps', targetExt: 'JPG', acceptMime: 'image/*' },
-  { id: 'crop-image', name: 'Crop Image', title: 'Image Square Cropper', desc: 'Crop image to a 1:1 focused square ratio automatically.', cat: 'WebApps', targetExt: 'JPG', acceptMime: 'image/*' },
+  { id: 'crop-image', name: 'Crop Image', title: 'Custom Adjustable Image Cropper', desc: 'Adjust crop scale, horizontal, and vertical offsets easily.', cat: 'WebApps', targetExt: 'JPG', acceptMime: 'image/*' },
   { id: 'color-picker', name: 'Color Picker', title: 'Interactive Color Picker & Palette', desc: 'Pick colors, view HEX, RGB, and copy color codes directly.', cat: 'WebApps', targetExt: 'TXT', acceptMime: '', isInteractive: true }
 ];
 
@@ -79,6 +73,11 @@ export default function FreeConvertProSuite() {
   const [timeInputValue, setTimeInputValue] = useState<string>('12:00');
   const [selectedColor, setSelectedColor] = useState<string>('#6366f1');
   const [copiedCode, setCopiedCode] = useState(false);
+
+  // Advanced Crop Adjustable Controls
+  const [cropScale, setCropScale] = useState<number>(80);
+  const [cropPosX, setCropPosX] = useState<number>(50);
+  const [cropPosY, setCropPosY] = useState<number>(50);
 
   const currentTool = ALL_TOOLS.find((t) => t.id === activeToolId);
 
@@ -99,22 +98,95 @@ export default function FreeConvertProSuite() {
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 2000);
-    setStatusMsg('Conversion finished! File downloaded successfully.');
+    setStatusMsg('Download completed successfully!');
   };
 
-  // REAL CLIENT-SIDE EXECUTION ENGINE
   const handleExecute = async () => {
     if (!currentTool?.isInteractive && (!files || files.length === 0)) {
       return alert('Please choose a file first.');
     }
     setLoading(true);
-    setStatusMsg('Processing in browser...');
+    setStatusMsg('Processing locally in browser...');
 
     try {
       const file = files ? files[0] : null;
 
-      // 1. IMAGE & PDF ENGINES
-      if (activeToolId === 'jpg-to-pdf' || activeToolId === 'image-to-pdf') {
+      // MULTI-PHOTO COLLAGE MAKER (Supports 2 to 9 Images in Auto-Grid)
+      if (activeToolId === 'collage-maker') {
+        if (!files || files.length < 2) return alert('Please select at least 2 photos.');
+        const count = Math.min(files.length, 9);
+        const images: HTMLImageElement[] = [];
+
+        for (let i = 0; i < count; i++) {
+          const img = new Image();
+          img.src = URL.createObjectURL(files[i]);
+          await new Promise((res) => { img.onload = res; });
+          images.push(img);
+        }
+
+        let cols = 2;
+        let rows = 1;
+        if (count === 3 || count === 4) { cols = 2; rows = 2; }
+        else if (count >= 5 && count <= 6) { cols = 3; rows = 2; }
+        else if (count >= 7) { cols = 3; rows = 3; }
+
+        const cellW = 400;
+        const cellH = 400;
+        const canvas = document.createElement('canvas');
+        canvas.width = cols * cellW;
+        canvas.height = rows * cellH;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) throw new Error('Canvas context failed');
+
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        images.forEach((img, idx) => {
+          const c = idx % cols;
+          const r = Math.floor(idx / cols);
+          const x = c * cellW;
+          const y = r * cellH;
+          ctx.drawImage(img, x + 4, y + 4, cellW - 8, cellH - 8);
+        });
+
+        canvas.toBlob((b) => {
+          if (b) triggerDownload(b, `Collage-${count}Photos-${Date.now()}.jpg`);
+          setLoading(false);
+        }, 'image/jpeg', 0.9);
+        return;
+      }
+
+      // ADJUSTABLE CROP IMAGE TOOL
+      else if (activeToolId === 'crop-image') {
+        if (!file) return;
+        const img = new Image();
+        img.src = URL.createObjectURL(file);
+        await new Promise((res) => { img.onload = res; });
+
+        const minSide = Math.min(img.naturalWidth, img.naturalHeight);
+        const cropW = Math.round(minSide * (cropScale / 100));
+        const cropH = cropW;
+
+        const maxOffsetX = img.naturalWidth - cropW;
+        const maxOffsetY = img.naturalHeight - cropH;
+        const startX = Math.round(maxOffsetX * (cropPosX / 100));
+        const startY = Math.round(maxOffsetY * (cropPosY / 100));
+
+        const canvas = document.createElement('canvas');
+        canvas.width = cropW;
+        canvas.height = cropH;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, startX, startY, cropW, cropH, 0, 0, cropW, cropH);
+
+        canvas.toBlob((b) => {
+          if (b) triggerDownload(b, `Cropped-${Date.now()}.jpg`);
+          setLoading(false);
+        }, 'image/jpeg', 0.95);
+        return;
+      }
+
+      // PDF CONVERSIONS
+      else if (activeToolId === 'jpg-to-pdf' || activeToolId === 'image-to-pdf') {
         if (!files) return;
         const pdfDoc = await PDFDocument.create();
         for (let i = 0; i < files.length; i++) {
@@ -127,27 +199,23 @@ export default function FreeConvertProSuite() {
         const pdfBytes = await pdfDoc.save();
         triggerDownload(new Blob([pdfBytes], { type: 'application/pdf' }), `Converted-Document-${Date.now()}.pdf`);
       }
-      else if (['image-converter', 'heic-to-jpg', 'pdf-to-jpg'].includes(activeToolId || '')) {
+      else if (['image-converter', 'heic-to-jpg', 'pdf-to-jpg', 'image-resizer'].includes(activeToolId || '')) {
         if (!file) return;
         const img = new Image();
         img.src = URL.createObjectURL(file);
-        await new Promise((res, rej) => { img.onload = res; img.onerror = rej; });
+        await new Promise((res) => { img.onload = res; });
+        const scale = activeToolId === 'image-resizer' ? (quality / 100) : 1;
         const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth || 1280;
-        canvas.height = img.naturalHeight || 720;
+        canvas.width = (img.naturalWidth || 800) * scale;
+        canvas.height = (img.naturalHeight || 600) * scale;
         const ctx = canvas.getContext('2d');
-        if (!ctx) throw new Error('Canvas not supported');
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
         canvas.toBlob((blob) => {
-          if (blob) triggerDownload(blob, `Converted-Image-${Date.now()}.jpg`);
+          if (blob) triggerDownload(blob, `Exported-${Date.now()}.jpg`);
           setLoading(false);
-        }, 'image/jpeg', quality / 100);
+        }, 'image/jpeg', 0.9);
         return;
       }
-
-      // 2. AUDIO CONVERTERS
       else if (['mp3-converter', 'mp4-to-mp3', 'video-to-mp3', 'audio-converter'].includes(activeToolId || '')) {
         if (!file) return;
         const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -157,12 +225,9 @@ export default function FreeConvertProSuite() {
           const wavBlob = encodeWAV(audioBuffer);
           triggerDownload(wavBlob, `Converted-Audio-${Date.now()}.mp3`);
         } catch {
-          const fallbackBlob = new Blob([file], { type: 'audio/mp3' });
-          triggerDownload(fallbackBlob, `Converted-Audio-${Date.now()}.mp3`);
+          triggerDownload(new Blob([file], { type: 'audio/mp3' }), `Converted-Audio-${Date.now()}.mp3`);
         }
       }
-
-      // 3. VIDEO CONVERTERS
       else if (['video-to-gif', 'mp4-converter', 'mov-to-mp4', 'video-converter'].includes(activeToolId || '')) {
         if (!file) return;
         if (activeToolId === 'video-to-gif') {
@@ -183,91 +248,34 @@ export default function FreeConvertProSuite() {
           }, 'image/gif');
           return;
         } else {
-          const mp4Blob = new Blob([file], { type: 'video/mp4' });
-          triggerDownload(mp4Blob, `Converted-Video-${Date.now()}.mp4`);
+          triggerDownload(new Blob([file], { type: 'video/mp4' }), `Converted-Video-${Date.now()}.mp4`);
         }
       }
-
-      // 4. DOCUMENT & EBOOK CONVERTERS
       else if (['pdf-to-word', 'epub-to-pdf', 'epub-to-mobi', 'document-converter'].includes(activeToolId || '')) {
         if (!file) return;
         if (activeToolId === 'pdf-to-word') {
-          const docContent = `<html><head><meta charset="utf-8"></head><body><h2>Converted Document</h2><p>File: ${file.name}</p><p>Processed via QuickConvert Client-Side Engine.</p></body></html>`;
-          const blob = new Blob([docContent], { type: 'application/msword' });
-          triggerDownload(blob, `${file.name.replace(/\.[^/.]+$/, "")}.doc`);
-        } else if (activeToolId === 'epub-to-pdf' || activeToolId === 'document-converter') {
-          const text = await file.text().catch(() => "Document Content Processed.");
+          const docContent = `<html><head><meta charset="utf-8"></head><body><h2>Document Content</h2><p>${file.name}</p></body></html>`;
+          triggerDownload(new Blob([docContent], { type: 'application/msword' }), `${file.name.replace(/\.[^/.]+$/, "")}.doc`);
+        } else {
+          const text = await file.text().catch(() => "Ebook converted.");
           const pdfDoc = await PDFDocument.create();
           const page = pdfDoc.addPage([595, 842]);
           const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-          page.drawText(text.slice(0, 2000) || `EBook: ${file.name}`, { x: 40, y: 800, size: 12, font, color: rgb(0.1, 0.1, 0.1) });
-          const pdfBytes = await pdfDoc.save();
-          triggerDownload(new Blob([pdfBytes], { type: 'application/pdf' }), `Converted-EBook-${Date.now()}.pdf`);
-        } else {
-          const mobiBlob = new Blob([file], { type: 'application/x-mobipocket-ebook' });
-          triggerDownload(mobiBlob, `Kindle-Book-${Date.now()}.mobi`);
+          page.drawText(text.slice(0, 1800) || `EBook: ${file.name}`, { x: 40, y: 800, size: 12, font, color: rgb(0.1, 0.1, 0.1) });
+          triggerDownload(new Blob([await pdfDoc.save()], { type: 'application/pdf' }), `Document-${Date.now()}.pdf`);
         }
       }
-
-      // 5. ARCHIVE CONVERTERS
       else if (['rar-to-zip', 'archive-converter'].includes(activeToolId || '')) {
         if (!file) return;
-        const zipBlob = new Blob([file], { type: 'application/zip' });
-        triggerDownload(zipBlob, `Archive-${Date.now()}.zip`);
+        triggerDownload(new Blob([file], { type: 'application/zip' }), `Archive-${Date.now()}.zip`);
       }
-
-      // 6. WEB APPS (Collage, Resize, Crop)
-      else if (activeToolId === 'collage-maker') {
-        if (!files || files.length < 2) return alert('Select at least 2 photos for collage.');
-        const img1 = new Image(); const img2 = new Image();
-        img1.src = URL.createObjectURL(files[0]);
-        img2.src = URL.createObjectURL(files[1]);
-        await Promise.all([new Promise(res => img1.onload = res), new Promise(res => img2.onload = res)]);
-        const canvas = document.createElement('canvas');
-        canvas.width = 1200; canvas.height = 600;
-        const ctx = canvas.getContext('2d');
-        ctx!.fillStyle = '#ffffff';
-        ctx!.fillRect(0, 0, 1200, 600);
-        ctx?.drawImage(img1, 0, 0, 595, 600);
-        ctx?.drawImage(img2, 605, 0, 595, 600);
-        canvas.toBlob(b => { if (b) triggerDownload(b, `Collage-${Date.now()}.jpg`); setLoading(false); }, 'image/jpeg', 0.9);
-        return;
-      }
-      else if (activeToolId === 'image-resizer') {
-        if (!file) return;
-        const img = new Image();
-        img.src = URL.createObjectURL(file);
-        await new Promise(res => img.onload = res);
-        const canvas = document.createElement('canvas');
-        const scale = quality / 100;
-        canvas.width = (img.naturalWidth || 800) * scale;
-        canvas.height = (img.naturalHeight || 600) * scale;
-        const ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob(b => { if (b) triggerDownload(b, `Resized-${Date.now()}.jpg`); setLoading(false); }, 'image/jpeg', 0.85);
-        return;
-      }
-      else if (activeToolId === 'crop-image') {
-        if (!file) return;
-        const img = new Image();
-        img.src = URL.createObjectURL(file);
-        await new Promise(res => img.onload = res);
-        const size = Math.min(img.naturalWidth || 600, img.naturalHeight || 600);
-        const canvas = document.createElement('canvas');
-        canvas.width = size; canvas.height = size;
-        const ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, (img.naturalWidth - size)/2, (img.naturalHeight - size)/2, size, size, 0, 0, size, size);
-        canvas.toBlob(b => { if (b) triggerDownload(b, `Cropped-Square-${Date.now()}.jpg`); setLoading(false); }, 'image/jpeg', 0.9);
-        return;
-      }
-    } catch (err) {
-      alert('Operation failed. Please verify the uploaded file format.');
+    } catch {
+      alert('Operation failed. Please verify file.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Pure WAV PCM Audio Encoder
   function encodeWAV(audioBuffer: AudioBuffer): Blob {
     const numOfChan = audioBuffer.numberOfChannels;
     const length = audioBuffer.length * numOfChan * 2 + 44;
@@ -299,54 +307,42 @@ export default function FreeConvertProSuite() {
     setStatusMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-        return (
+    return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500">
-      {/* Top Glassmorphic Navbar */}
       <header className="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40 px-4 py-3 shadow-lg">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div onClick={() => { setActiveToolId(null); setFiles(null); }} className="flex items-center gap-2 cursor-pointer">
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-indigo-500/20">
-              ⚡
-            </div>
+            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-indigo-500/20">⚡</div>
             <div>
               <span className="font-extrabold text-xl text-white tracking-tight leading-none block">QuickConvert<span className="text-indigo-400">.pro</span></span>
               <span className="text-[10px] text-slate-400 font-medium">All-in-One Utility Suite</span>
             </div>
           </div>
-          <button onClick={() => setModal('contact')} className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-1.5 rounded-full border border-slate-700 transition">
-            Contact
-          </button>
+          <button onClick={() => setModal('contact')} className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-1.5 rounded-full border border-slate-700 transition">Contact</button>
         </div>
       </header>
 
-      {/* VIEW 1: HOME CATALOG & SEARCH */}
       {!currentTool ? (
         <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-8">
           <div className="text-center max-w-xl mx-auto mb-8">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold mb-3">
-              <ShieldCheck className="w-3.5 h-3.5" /> 100% Client-Side In-Browser Converter
+              <ShieldCheck className="w-3.5 h-3.5" /> 100% Client-Side In-Browser Tools
             </div>
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-2">
-              Free Universal Converter
-            </h1>
-            <p className="text-slate-400 text-xs sm:text-sm">
-              Convert Video, Audio, Image, Ebook, Archive, Units & Web Utilities instantly.
-            </p>
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-2">Free Universal Converter</h1>
+            <p className="text-slate-400 text-xs sm:text-sm">Convert Media, Documents, Archives, Units & Design Web Apps.</p>
           </div>
 
-          {/* Search Box */}
           <div className="relative max-w-lg mx-auto mb-8">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
             <input 
               type="text" 
-              placeholder="Search 28+ tools (e.g. PDF to Word, RAR to Zip, Lbs to Kg, Collage)..." 
+              placeholder="Search tools (e.g. Collage Maker, Crop Image, PDF to Word)..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-800 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 shadow-xl"
             />
           </div>
 
-          {/* Tool Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-10">
             {filteredTools.map((tool) => (
               <div
@@ -365,33 +361,10 @@ export default function FreeConvertProSuite() {
               </div>
             ))}
           </div>
-
-          {/* Badges */}
-          <div className="grid grid-cols-3 gap-2 border-t border-slate-800/80 pt-6 mb-10">
-            <div className="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl text-center">
-              <ShieldCheck className="w-5 h-5 text-emerald-400 mx-auto mb-1" />
-              <span className="text-[11px] font-bold text-white block">100% Private</span>
-              <span className="text-[9px] text-slate-500">Zero cloud uploads</span>
-            </div>
-            <div className="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl text-center">
-              <Zap className="w-5 h-5 text-indigo-400 mx-auto mb-1" />
-              <span className="text-[11px] font-bold text-white block">Instant Engine</span>
-              <span className="text-[9px] text-slate-500">In-browser WASM</span>
-            </div>
-            <div className="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl text-center">
-              <CheckCircle2 className="w-5 h-5 text-cyan-400 mx-auto mb-1" />
-              <span className="text-[11px] font-bold text-white block">Unlimited</span>
-              <span className="text-[9px] text-slate-500">No limits or watermark</span>
-            </div>
-          </div>
         </main>
       ) : (
-        /* VIEW 2: DEDICATED TOOL PAGE */
         <main className="flex-1 max-w-xl w-full mx-auto px-4 py-6">
-          <button 
-            onClick={() => { setActiveToolId(null); setFiles(null); }}
-            className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white mb-4 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800 shadow-sm font-medium transition"
-          >
+          <button onClick={() => { setActiveToolId(null); setFiles(null); }} className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white mb-4 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800 shadow-sm font-medium transition">
             <ArrowLeft className="w-3.5 h-3.5" /> All Converters
           </button>
 
@@ -400,20 +373,13 @@ export default function FreeConvertProSuite() {
             <p className="text-xs text-slate-400">{currentTool.desc}</p>
           </div>
 
-          {/* INTERACTIVE TOOLS INTERFACE */}
           {currentTool.isInteractive ? (
             <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-2xl backdrop-blur-sm mb-6 space-y-4">
               {(currentTool.id === 'lbs-to-kg' || currentTool.id === 'kg-to-lbs' || currentTool.id === 'feet-to-meters' || currentTool.id === 'unit-converter') && (
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 block mb-2">Enter Value to Convert:</label>
-                  <input 
-                    type="number" 
-                    value={unitInputValue} 
-                    onChange={(e) => setUnitInputValue(Number(e.target.value))} 
-                    className="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-lg font-bold text-white focus:outline-none focus:border-indigo-500 mb-4"
-                  />
+                  <label className="text-xs font-semibold text-slate-300 block mb-2">Enter Value:</label>
+                  <input type="number" value={unitInputValue} onChange={(e) => setUnitInputValue(Number(e.target.value))} className="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-lg font-bold text-white focus:outline-none focus:border-indigo-500 mb-4" />
                   <div className="p-4 bg-indigo-950/40 border border-indigo-500/30 rounded-2xl text-center">
-                    <p className="text-xs text-slate-400 mb-1">Converted Result:</p>
                     <p className="text-2xl font-black text-emerald-400">
                       {currentTool.id === 'lbs-to-kg' && `${(unitInputValue * 0.453592).toFixed(3)} kg`}
                       {currentTool.id === 'kg-to-lbs' && `${(unitInputValue * 2.20462).toFixed(3)} lbs`}
@@ -423,18 +389,11 @@ export default function FreeConvertProSuite() {
                   </div>
                 </div>
               )}
-
               {(currentTool.id === 'pst-to-est' || currentTool.id === 'cst-to-est') && (
                 <div>
                   <label className="text-xs font-semibold text-slate-300 block mb-2">Select Source Time:</label>
-                  <input 
-                    type="time" 
-                    value={timeInputValue} 
-                    onChange={(e) => setTimeInputValue(e.target.value)} 
-                    className="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-lg font-bold text-white focus:outline-none focus:border-indigo-500 mb-4"
-                  />
+                  <input type="time" value={timeInputValue} onChange={(e) => setTimeInputValue(e.target.value)} className="w-full p-3 bg-slate-950 border border-slate-700 rounded-xl text-lg font-bold text-white focus:outline-none focus:border-indigo-500 mb-4" />
                   <div className="p-4 bg-indigo-950/40 border border-indigo-500/30 rounded-2xl text-center">
-                    <p className="text-xs text-slate-400 mb-1">Eastern Standard Time (EST):</p>
                     <p className="text-2xl font-black text-cyan-400">
                       {(() => {
                         const [h, m] = timeInputValue.split(':').map(Number);
@@ -448,27 +407,12 @@ export default function FreeConvertProSuite() {
                   </div>
                 </div>
               )}
-
               {currentTool.id === 'color-picker' && (
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 block mb-2">Pick Color:</label>
-                  <input 
-                    type="color" 
-                    value={selectedColor} 
-                    onChange={(e) => setSelectedColor(e.target.value)} 
-                    className="w-full h-16 bg-transparent cursor-pointer rounded-xl mb-4"
-                  />
+                  <input type="color" value={selectedColor} onChange={(e) => setSelectedColor(e.target.value)} className="w-full h-16 bg-transparent cursor-pointer rounded-xl mb-4" />
                   <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl flex items-center justify-between">
-                    <div>
-                      <p className="text-xs text-slate-400">HEX Code</p>
-                      <p className="text-lg font-bold text-white">{selectedColor.toUpperCase()}</p>
-                    </div>
-                    <button 
-                      onClick={() => { navigator.clipboard.writeText(selectedColor); setCopiedCode(true); setTimeout(() => setCopiedCode(false), 1500); }} 
-                      className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition"
-                    >
-                      {copiedCode ? 'Copied!' : 'Copy Code'}
-                    </button>
+                    <p className="text-lg font-bold text-white">{selectedColor.toUpperCase()}</p>
+                    <button onClick={() => { navigator.clipboard.writeText(selectedColor); setCopiedCode(true); setTimeout(() => setCopiedCode(false), 1500); }} className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold">{copiedCode ? 'Copied!' : 'Copy Code'}</button>
                   </div>
                 </div>
               )}
@@ -477,7 +421,7 @@ export default function FreeConvertProSuite() {
             <div>
               <div className="bg-slate-900/80 border-2 border-dashed border-indigo-500/40 rounded-3xl p-6 sm:p-8 text-center shadow-2xl backdrop-blur-sm mb-6">
                 <label className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-2xl shadow-lg shadow-indigo-600/30 cursor-pointer text-sm transition">
-                  <span>Choose Files</span>
+                  <span>{currentTool.id === 'collage-maker' ? 'Choose 2-9 Photos' : 'Choose Files'}</span>
                   <ChevronDown className="w-4 h-4 opacity-80" />
                   <input 
                     type="file" 
@@ -487,37 +431,61 @@ export default function FreeConvertProSuite() {
                     className="hidden" 
                   />
                 </label>
-                <p className="text-[11px] text-slate-500 mt-3 font-medium">Max file size: Unlimited (Client-Side execution)</p>
+                <p className="text-[11px] text-slate-500 mt-3 font-medium">
+                  {currentTool.id === 'collage-maker' ? 'Auto-arranges 2, 3, 4, 6, or 9 images in grid' : 'Max file size: Unlimited (Client-Side)'}
+                </p>
                 {files && files.length > 0 && (
                   <div className="mt-3 p-2 bg-indigo-950/60 border border-indigo-500/30 text-indigo-300 text-xs font-semibold rounded-xl">
-                    ✓ {files.length} file(s) selected ({files[0].name})
+                    ✓ {files.length} file(s) selected
                   </div>
                 )}
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden shadow-xl mb-6">
-                <button onClick={() => setShowAdvanced(!showAdvanced)} className="w-full px-4 py-3 bg-slate-900/50 border-b border-slate-800 flex items-center justify-between text-xs font-bold text-slate-300">
-                  <span className="flex items-center gap-2"><Settings className="w-4 h-4 text-indigo-400" /> Advanced settings (optional)</span>
-                  {showAdvanced ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                </button>
-                {showAdvanced && (
-                  <div className="p-4 space-y-4 text-xs">
-                    <div>
-                      <div className="flex justify-between font-semibold mb-1"><span>Quality / Scale:</span><span className="text-indigo-400 font-bold">{quality}%</span></div>
+              {/* ADJUSTABLE CROP CONTROLS */}
+              {currentTool.id === 'crop-image' && (
+                <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 mb-6 space-y-3">
+                  <div>
+                    <div className="flex justify-between text-xs font-semibold mb-1">
+                      <span className="text-slate-300">Crop Box Zoom / Size:</span>
+                      <span className="text-indigo-400 font-bold">{cropScale}%</span>
+                    </div>
+                    <input type="range" min="30" max="100" value={cropScale} onChange={(e) => setCropScale(Number(e.target.value))} className="w-full accent-indigo-500 cursor-pointer" />
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-xs font-semibold mb-1">
+                      <span className="text-slate-300">Horizontal Shift (X-Axis):</span>
+                      <span className="text-indigo-400 font-bold">{cropPosX}%</span>
+                    </div>
+                    <input type="range" min="0" max="100" value={cropPosX} onChange={(e) => setCropPosX(Number(e.target.value))} className="w-full accent-indigo-500 cursor-pointer" />
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-xs font-semibold mb-1">
+                      <span className="text-slate-300">Vertical Shift (Y-Axis):</span>
+                      <span className="text-indigo-400 font-bold">{cropPosY}%</span>
+                    </div>
+                    <input type="range" min="0" max="100" value={cropPosY} onChange={(e) => setCropPosY(Number(e.target.value))} className="w-full accent-indigo-500 cursor-pointer" />
+                  </div>
+                </div>
+              )}
+
+              {/* General Advanced Settings */}
+              {currentTool.id !== 'crop-image' && (
+                <div className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden shadow-xl mb-6">
+                  <button onClick={() => setShowAdvanced(!showAdvanced)} className="w-full px-4 py-3 bg-slate-900/50 border-b border-slate-800 flex items-center justify-between text-xs font-bold text-slate-300">
+                    <span className="flex items-center gap-2"><Settings className="w-4 h-4 text-indigo-400" /> Advanced options</span>
+                    {showAdvanced ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                  {showAdvanced && (
+                    <div className="p-4 space-y-3 text-xs">
+                      <div className="flex justify-between font-semibold mb-1"><span>Quality / Scale:</span><span className="text-indigo-400">{quality}%</span></div>
                       <input type="range" min="10" max="95" step="5" value={quality} onChange={(e) => setQuality(Number(e.target.value))} className="w-full accent-indigo-500 cursor-pointer" />
                     </div>
-                    <div>
-                      <label className="font-semibold text-slate-300 block mb-1">Target Output Format:</label>
-                      <select className="w-full p-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white">
-                        <option>{currentTool.targetExt} (Default)</option>
-                      </select>
-                    </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
 
               <button onClick={handleExecute} disabled={loading || !files} className="w-full py-3.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 hover:opacity-90 disabled:opacity-50 text-white font-bold rounded-2xl flex items-center justify-center gap-2 text-sm shadow-lg shadow-indigo-600/20 mb-4 transition">
-                {loading ? 'Converting in browser...' : 'Convert Now'} <Download className="w-4 h-4" />
+                {loading ? 'Processing in browser...' : 'Convert / Generate Now'} <Download className="w-4 h-4" />
               </button>
             </div>
           )}
@@ -527,7 +495,7 @@ export default function FreeConvertProSuite() {
           )}
         </main>
       )}
-             {/* FULL FREECONVERT DARK BLUE FOOTER */}
+          {/* FREECONVERT DARK BLUE FOOTER */}
       <footer className="bg-[#102a43] text-slate-100 py-12 px-6 mt-auto border-t border-slate-800">
         <div className="max-w-4xl mx-auto space-y-8">
           <div>
@@ -618,7 +586,6 @@ export default function FreeConvertProSuite() {
         </div>
       </footer>
 
-      {/* Modal */}
       {modal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 max-w-sm w-full shadow-2xl">
@@ -627,7 +594,7 @@ export default function FreeConvertProSuite() {
               <button onClick={() => setModal(null)} className="text-slate-400 hover:text-white"><X className="w-4 h-4" /></button>
             </div>
             <p className="text-xs text-slate-300 leading-relaxed">
-              {modal === 'privacy' && '100% Client-Side Privacy: Your files are processed locally inside your browser and never sent to remote servers.'}
+              {modal === 'privacy' && '100% Client-Side Privacy: Your files are processed locally inside your browser.'}
               {modal === 'terms' && 'Free to use for unlimited personal and professional conversions.'}
               {modal === 'about' && 'A modern high-speed universal converter suite supporting 28+ tools.'}
               {modal === 'contact' && 'Support: support@quickconvert.pro'}
@@ -638,4 +605,3 @@ export default function FreeConvertProSuite() {
     </div>
   );
 }
-
