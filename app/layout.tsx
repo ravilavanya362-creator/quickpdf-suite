@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'QuickConvert Pro - Free Online File Converter',
+  title: 'Quick ConvertPro - Free Online File Converter',
   description: 'Convert Video, Audio, Image, PDF, Documents and Units for free in your browser.',
   icons: {
     icon: '/logo.png',
@@ -25,4 +25,3 @@ export default function RootLayout({
     </html>
   );
 }
-
