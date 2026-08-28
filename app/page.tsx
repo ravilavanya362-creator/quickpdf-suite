@@ -13,7 +13,9 @@ import {
   Download, 
   Menu, 
   X, 
-  ArrowLeft 
+  ArrowLeft,
+  ChevronUp,
+  HelpCircle
 } from 'lucide-react';
 
 interface ToolItem {
@@ -58,12 +60,32 @@ const TOOL_REGISTRY: Record<string, ToolItem> = {
   'color-picker': { id: 'color-picker', name: 'Color Picker', title: 'Color Code & Palette Finder', desc: 'Pick colors visually and copy HEX or RGB codes instantly.', cat: 'WebApps', targetExt: 'TXT', acceptMime: '' }
 };
 
+const FAQ_LIST = [
+  {
+    q: 'Is QuickConvert.pro safe to use?',
+    a: 'Yes, absolutely! All conversions run entirely inside your browser memory using client-side technology. Your files are never uploaded, transferred, or stored on external servers.'
+  },
+  {
+    q: 'Are the tools really 100% free?',
+    a: 'Yes, all file converters, PDF mergers, image tools, and unit calculators are completely free to use with no hidden charges or subscription limits.'
+  },
+  {
+    q: 'What is the maximum file size supported?',
+    a: 'Since processing executes directly on your local device hardware, files up to 1GB can be processed seamlessly based on your browser and RAM capabilities.'
+  },
+  {
+    q: 'Do I need to install any software or extensions?',
+    a: 'No software or extension installation is required. Everything runs smoothly inside any modern mobile or desktop browser on Android, iOS, Windows, Mac, or Linux.'
+  }
+];
+
 export default function App() {
   const [selectedToolKey, setSelectedToolKey] = useState<string | null>(null);
   const [files, setFiles] = useState<FileList | null>(null);
   const [loading, setLoading] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
   const [modal, setModal] = useState<string | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const activeTool = selectedToolKey ? TOOL_REGISTRY[selectedToolKey] : null;
 
@@ -129,7 +151,7 @@ export default function App() {
   };
     return (
     <div style={{ minHeight: '100vh', backgroundColor: '#fafbfc', color: '#1e293b', display: 'flex', flexDirection: 'column', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
-      {/* 1. Header with Embedded 3D Logo */}
+      {/* 1. Header */}
       <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 40, padding: '8px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <button onClick={() => setModal('menu')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#334155' }}>
@@ -137,7 +159,6 @@ export default function App() {
           </button>
           
           <div onClick={() => { setSelectedToolKey(null); setFiles(null); }} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-            {/* 3D App Icon */}
             <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'linear-gradient(145deg, #0ea5e9, #2563eb, #6366f1)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(37,99,235,0.3)', flexShrink: 0 }}>
               <div style={{ width: '22px', height: '22px', borderRadius: '50%', backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)' }}>
                 <span style={{ color: '#eab308', fontWeight: 900, fontSize: '13px', lineHeight: 1 }}>⇄</span>
@@ -155,7 +176,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* 2. Main Hero & Brand Center */}
+      {/* 2. Main Hero & Brand Section */}
       <main style={{ flex: 1, maxWidth: '600px', width: '100%', margin: '0 auto', padding: '24px 16px', boxSizing: 'border-box' }}>
         {activeTool && (
           <button 
@@ -166,10 +187,8 @@ export default function App() {
           </button>
         )}
 
-        {/* Big Professional Brand Section */}
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
-            {/* Big 3D Logo Display */}
             <div style={{ width: '70px', height: '70px', borderRadius: '20px', background: 'linear-gradient(145deg, #0ea5e9, #2563eb, #6366f1)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 20px rgba(37,99,235,0.35)' }}>
               <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.15)' }}>
                 <span style={{ color: '#eab308', fontWeight: 900, fontSize: '24px', lineHeight: 1 }}>⇄</span>
@@ -207,18 +226,9 @@ export default function App() {
 
           <p style={{ fontSize: '12px', color: '#64748b', marginTop: '12px', fontWeight: 500 }}>
             Max file size 1GB.{' '}
-            <span onClick={() => setModal('signup')} style={{ color: '#2563eb', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }}>
-              Sign Up
-            </span>{' '}
-            for more
-          </p>
-
-          <p style={{ fontSize: '11px', color: '#94a3b8', marginTop: '8px', maxWidth: '320px', margin: '8px auto 0 auto', lineHeight: 1.5 }}>
-            By proceeding, you confirm you own the rights to the files you upload and agree to our{' '}
-            <span onClick={() => setModal('terms')} style={{ color: '#2563eb', cursor: 'pointer', textDecoration: 'underline' }}>
+            <span onClick={() => setModal('terms')} style={{ color: '#2563eb', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }}>
               Terms of Use
             </span>
-            .
           </p>
 
           {files && files.length > 0 && (
@@ -305,20 +315,38 @@ export default function App() {
           </div>
         </div>
 
-        {/* 5. Upgrade Banner */}
-        <div style={{ backgroundColor: '#5b6cf9', color: '#ffffff', borderRadius: '16px', padding: '24px', textAlign: 'center', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', marginBottom: '40px' }}>
-          <h3 style={{ fontWeight: 800, fontSize: '16px', margin: '0 0 12px 0', lineHeight: 1.4 }}>
-            Need faster conversions with zero queues?<br />Join Free Today
-          </h3>
-          <button 
-            onClick={() => setModal('signup')} 
-            style={{ padding: '8px 24px', backgroundColor: '#ffcc00', border: 'none', color: '#0f172a', fontWeight: 'bold', borderRadius: '8px', fontSize: '12px', cursor: 'pointer' }}
-          >
-            Sign Up
-          </button>
+        {/* 5. FAQs Section */}
+        <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '36px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+            <HelpCircle size={20} color="#2563eb" />
+            <h3 style={{ fontWeight: 800, fontSize: '16px', color: '#0f172a', margin: 0 }}>Frequently Asked Questions</h3>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {FAQ_LIST.map((faq, idx) => (
+              <div 
+                key={idx} 
+                style={{ border: '1px solid #edf2f7', borderRadius: '10px', overflow: 'hidden', transition: 'all 0.2s' }}
+              >
+                <div 
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  style={{ padding: '12px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', backgroundColor: openFaq === idx ? '#f8fafc' : '#ffffff' }}
+                >
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#1e293b' }}>{faq.q}</span>
+                  {openFaq === idx ? <ChevronUp size={16} color="#2563eb" /> : <ChevronDown size={16} color="#94a3b8" />}
+                </div>
+                {openFaq === idx && (
+                  <div style={{ padding: '10px 14px 14px 14px', fontSize: '12px', color: '#64748b', lineHeight: 1.6, backgroundColor: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </main>
-            {/* 6. Footer */}
+                         
+      {/* 6. Footer with Centered Last Three Lines */}
       <footer style={{ backgroundColor: '#102a43', color: '#f1f5f9', padding: '40px 20px', marginTop: 'auto' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '28px' }}>
           <div>
@@ -401,21 +429,21 @@ export default function App() {
             <a href="mailto:pavanibevara045@gmail.com" style={{ color: '#cbd5e1', textDecoration: 'none' }}>Contact</a>
           </div>
 
-          {/* Professional Footer Branding */}
-          <div style={{ borderTop: '1px solid #334e68', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '22px', height: '22px', borderRadius: '6px', background: 'linear-gradient(145deg, #0ea5e9, #2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ color: '#eab308', fontWeight: 900, fontSize: '11px', lineHeight: 1 }}>⇄</span>
-                </div>
-                <span style={{ fontWeight: 'bold', color: '#ffffff', fontSize: '13px' }}>QuickConvert.pro</span>
+          {/* Center-Adjusted Last Three Lines */}
+          <div style={{ borderTop: '1px solid #334e68', paddingTop: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '8px' }}>
+            {/* 1st Line: Logo + QuickConvert.pro */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <div style={{ width: '22px', height: '22px', borderRadius: '6px', background: 'linear-gradient(145deg, #0ea5e9, #2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ color: '#eab308', fontWeight: 900, fontSize: '11px', lineHeight: 1 }}>⇄</span>
               </div>
-              <span style={{ color: '#94a3b8', fontSize: '11px' }}>© 2026 QuickConvert.pro. All rights reserved.</span>
+              <span style={{ fontWeight: 'bold', color: '#ffffff', fontSize: '14px' }}>QuickConvert.pro</span>
             </div>
-            
-            <div>
-              <span style={{ color: '#818cf8', fontWeight: 700, fontSize: '12px' }}>Created by The Pavi Studio</span>
-            </div>
+
+            {/* 2nd Line: Copyright */}
+            <span style={{ color: '#94a3b8', fontSize: '11px' }}>© 2026 QuickConvert.pro. All rights reserved.</span>
+
+            {/* 3rd Line: Created by The Pavi Studio */}
+            <span style={{ color: '#818cf8', fontWeight: 700, fontSize: '12px' }}>Created by The Pavi Studio</span>
           </div>
         </div>
       </footer>
@@ -431,14 +459,6 @@ export default function App() {
               </button>
             </div>
             <div style={{ fontSize: '12px', color: '#475569', lineHeight: 1.6 }}>
-              {modal === 'signup' && (
-                <div>
-                  <p style={{ fontWeight: 'bold', color: '#0f172a', margin: '0 0 4px 0' }}>Create Free Account</p>
-                  <p style={{ margin: '0 0 12px 0' }}>Sign up to enjoy batch queues, 1GB conversions, and fast processing.</p>
-                  <input type="email" placeholder="Enter your email" style={{ width: '100%', padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', marginBottom: '8px', boxSizing: 'border-box' }} />
-                  <button onClick={() => { alert('Account registered successfully!'); setModal(null); }} style={{ width: '100%', padding: '10px', backgroundColor: '#2563eb', color: '#ffffff', fontWeight: 'bold', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Sign Up Free</button>
-                </div>
-              )}
               {modal === 'about' && <p><strong>About Us:</strong> QuickConvert.pro is a privacy-first web utility platform engineered by The Pavi Studio to convert multimedia files directly in client browsers with zero latency.</p>}
               {modal === 'terms' && <p><strong>Terms of Service:</strong> Users retain 100% intellectual property ownership of uploaded files. Processing occurs solely on client hardware.</p>}
               {modal === 'privacy' && <p><strong>Privacy Guarantee:</strong> We do not log or store files on remote servers.</p>}
@@ -448,7 +468,6 @@ export default function App() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontWeight: 500 }}>
                   <span onClick={() => { setSelectedToolKey(null); setModal(null); }} style={{ cursor: 'pointer', color: '#2563eb' }}>🏠 Home</span>
                   <span onClick={() => setModal('about')} style={{ cursor: 'pointer' }}>ℹ️ About Us</span>
-                  <span onClick={() => setModal('signup')} style={{ cursor: 'pointer' }}>✨ Sign Up Free</span>
                   <a href="mailto:pavanibevara045@gmail.com" style={{ color: '#2563eb', textDecoration: 'none' }}>📧 Email Developer</a>
                 </div>
               )}
@@ -458,5 +477,4 @@ export default function App() {
       )}
     </div>
   );
-              }
-
+}
