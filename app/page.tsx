@@ -64,7 +64,6 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
   const [modal, setModal] = useState<string | null>(null);
-  const [imgError, setImgError] = useState(false);
 
   const activeTool = selectedToolKey ? TOOL_REGISTRY[selectedToolKey] : null;
 
@@ -130,32 +129,25 @@ export default function App() {
   };
     return (
     <div style={{ minHeight: '100vh', backgroundColor: '#fafbfc', color: '#1e293b', display: 'flex', flexDirection: 'column', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
-      {/* 1. Header */}
-      <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 40, padding: '12px 16px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
+      {/* 1. Header with Clean Logo & Branding */}
+      <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 40, padding: '10px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <button onClick={() => setModal('menu')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#334155' }}>
             <Menu size={24} />
           </button>
           
-          <div onClick={() => { setSelectedToolKey(null); setFiles(null); }} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-            {!imgError ? (
-              <img 
-                src="/logo.png" 
-                alt="Logo" 
-                onError={() => setImgError(true)} 
-                style={{ height: '32px', width: '32px', objectFit: 'contain', borderRadius: '6px' }} 
-              />
-            ) : (
-              <div style={{ height: '32px', width: '32px', borderRadius: '8px', backgroundColor: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontWeight: 'bold', fontSize: '14px' }}>
-                ⇄
-              </div>
-            )}
+          <div onClick={() => { setSelectedToolKey(null); setFiles(null); }} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+            <img 
+              src="/logo.png" 
+              alt="Logo" 
+              style={{ height: '36px', width: '36px', objectFit: 'contain', borderRadius: '8px' }} 
+            />
             <span style={{ fontWeight: 900, fontSize: '20px', color: '#0f172a', letterSpacing: '-0.5px' }}>
-              Quick <span style={{ color: '#2563eb' }}>ConvertPro</span>
+              QuickConvert<span style={{ color: '#2563eb' }}>.pro</span>
             </span>
           </div>
 
-          <a href="mailto:pavanibevara045@gmail.com" style={{ fontSize: '12px', backgroundColor: '#f1f5f9', color: '#334155', padding: '6px 12px', borderRadius: '9999px', textDecoration: 'none', fontWeight: 600 }}>
+          <a href="mailto:pavanibevara045@gmail.com" style={{ fontSize: '12px', backgroundColor: '#f1f5f9', color: '#334155', padding: '6px 14px', borderRadius: '9999px', textDecoration: 'none', fontWeight: 600 }}>
             Contact
           </a>
         </div>
@@ -307,7 +299,7 @@ export default function App() {
           </button>
         </div>
       </main>
-           {/* 6. Footer */}
+      {/* 6. Footer with Clean Branding & Correct Copyright */}
       <footer style={{ backgroundColor: '#102a43', color: '#f1f5f9', padding: '40px 20px', marginTop: 'auto' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '28px' }}>
           <div>
@@ -390,11 +382,19 @@ export default function App() {
             <a href="mailto:pavanibevara045@gmail.com" style={{ color: '#cbd5e1', textDecoration: 'none' }}>Contact</a>
           </div>
 
-          {/* Branding Footer */}
-          <div style={{ borderTop: '1px solid #334e68', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', flexWrap: 'wrap', gap: '8px' }}>
-            <span style={{ fontWeight: 'bold', color: '#ffffff' }}>Quick ConvertPro</span>
-            <span style={{ color: '#94a3b8' }}>© Quick ConvertPro</span>
-            <span style={{ color: '#818cf8', fontWeight: 600 }}>Created by The Pavi Studio</span>
+          {/* Corrected Professional Footer Branding */}
+          <div style={{ borderTop: '1px solid #334e68', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <img src="/logo.png" alt="Logo" style={{ height: '22px', width: '22px', objectFit: 'contain', borderRadius: '4px' }} />
+                <span style={{ fontWeight: 'bold', color: '#ffffff', fontSize: '13px' }}>QuickConvert.pro</span>
+              </div>
+              <span style={{ color: '#94a3b8', fontSize: '11px' }}>© 2026 QuickConvert.pro. All rights reserved.</span>
+            </div>
+            
+            <div>
+              <span style={{ color: '#818cf8', fontWeight: 700, fontSize: '12px' }}>Created by The Pavi Studio</span>
+            </div>
           </div>
         </div>
       </footer>
@@ -418,7 +418,7 @@ export default function App() {
                   <button onClick={() => { alert('Account registered successfully!'); setModal(null); }} style={{ width: '100%', padding: '10px', backgroundColor: '#2563eb', color: '#ffffff', fontWeight: 'bold', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Sign Up Free</button>
                 </div>
               )}
-              {modal === 'about' && <p><strong>About Us:</strong> Quick ConvertPro is a privacy-first web utility platform engineered by The Pavi Studio to convert multimedia files directly in client browsers with zero latency.</p>}
+              {modal === 'about' && <p><strong>About Us:</strong> QuickConvert.pro is a privacy-first web utility platform engineered by The Pavi Studio to convert multimedia files directly in client browsers with zero latency.</p>}
               {modal === 'terms' && <p><strong>Terms of Service:</strong> Users retain 100% intellectual property ownership of uploaded files. Processing occurs solely on client hardware.</p>}
               {modal === 'privacy' && <p><strong>Privacy Guarantee:</strong> We do not log or store files on remote servers.</p>}
               {modal === 'security' && <p><strong>Security:</strong> Sandboxed HTML5 WebAssembly execution with instant memory purge.</p>}
@@ -437,4 +437,4 @@ export default function App() {
       )}
     </div>
   );
-              }
+}
