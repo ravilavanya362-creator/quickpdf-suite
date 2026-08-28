@@ -150,7 +150,7 @@ export default function App() {
     setStatusMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-   return (
+    return (
     <div style={{ minHeight: '100vh', backgroundColor: '#fafbfc', color: '#1e293b', display: 'flex', flexDirection: 'column', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       {/* 1. Header */}
       <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 40, padding: '10px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
@@ -328,7 +328,7 @@ export default function App() {
             </div>
           </>
         ) : (
-            <article style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '24px 20px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginBottom: '36px' }}>
+              <article style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '24px 20px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginBottom: '36px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
               <span style={{ fontSize: '11px', fontWeight: 800, color: '#2563eb', backgroundColor: '#eff6ff', padding: '4px 10px', borderRadius: '9999px', textTransform: 'uppercase' }}>
                 Tech & File Conversion
@@ -438,7 +438,7 @@ export default function App() {
           </div>
         </div>
       </main>
-           {/* 6. Comprehensive Footer with Social Links & Centered Branding */}
+            {/* 6. Comprehensive Footer with Social Links & Centered Branding */}
       <footer style={{ backgroundColor: '#0f1f2e', color: '#f1f5f9', padding: '44px 20px 32px 20px', marginTop: 'auto' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '32px' }}>
           
@@ -545,4 +545,5 @@ export default function App() {
       )}
     </div>
   );
-                  }
+                         }
+
