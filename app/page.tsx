@@ -15,7 +15,10 @@ import {
   X, 
   ArrowLeft,
   ChevronUp,
-  HelpCircle
+  HelpCircle,
+  Clock,
+  Calendar,
+  User
 } from 'lucide-react';
 
 interface ToolItem {
@@ -147,7 +150,7 @@ export default function App() {
     setStatusMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-    return (
+   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#fafbfc', color: '#1e293b', display: 'flex', flexDirection: 'column', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       {/* 1. Header */}
       <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 40, padding: '10px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
@@ -325,58 +328,74 @@ export default function App() {
             </div>
           </>
         ) : (
-                <article style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '24px 20px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginBottom: '36px' }}>
+            <article style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '24px 20px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginBottom: '36px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
               <span style={{ fontSize: '11px', fontWeight: 800, color: '#2563eb', backgroundColor: '#eff6ff', padding: '4px 10px', borderRadius: '9999px', textTransform: 'uppercase' }}>
                 Tech & File Conversion
               </span>
               <span style={{ fontSize: '12px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                4 min read
+                <Clock size={13} /> 4 min read
               </span>
             </div>
 
             <h1 style={{ fontSize: '22px', fontWeight: 900, color: '#0f172a', lineHeight: 1.35, margin: '0 0 14px 0' }}>
-              The Ultimate Guide to Free File Conversion Online: Video, Audio, Images & PDFs (2026 Edition)
+              The Ultimate Guide: How to Convert and Compress Images Online Without Losing Quality
             </h1>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '16px', marginBottom: '20px', fontSize: '12px', color: '#64748b' }}>
-              <span style={{ fontWeight: 600, color: '#2563eb' }}>The Pavi Studio</span>
-              <span>August 2026</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}><User size={14} color="#2563eb" /> The Pavi Studio</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Calendar size={14} /> August 2026</span>
             </div>
 
-            {/* Premium Article Visual Banner */}
+            {/* Premium Article Visual Banner 1 */}
             <div style={{ width: '100%', height: '170px', borderRadius: '16px', background: 'linear-gradient(135deg, #1e3a8a, #3b82f6, #06b6d4)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#ffffff', padding: '16px', boxSizing: 'border-box', textAlign: 'center', marginBottom: '22px', boxShadow: '0 6px 16px rgba(37,99,235,0.2)' }}>
               <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-                <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 800 }}>MP4 ➔ MP3</span>
+                <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 800 }}>PNG ➔ WEBP</span>
                 <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 800 }}>JPG ➔ PDF</span>
-                <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 800 }}>HEIC ➔ JPG</span>
+                <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 800 }}>COMPRESS 100%</span>
               </div>
-              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 800 }}>Lightning-Fast In-Browser Conversions</h3>
-              <p style={{ margin: '4px 0 0 0', fontSize: '11px', opacity: 0.9 }}>100% Privacy Protected • Zero Cloud Server Storage</p>
+              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 800 }}>Lossless Online Image Compression</h3>
+              <p style={{ margin: '4px 0 0 0', fontSize: '11px', opacity: 0.9 }}>Optimized for High SEO Performance & Speed</p>
             </div>
 
             <p style={{ fontSize: '13px', color: '#334155', lineHeight: 1.7, margin: '0 0 16px 0' }}>
-              Finding a fast, reliable, and secure online file converter is one of the most frequent challenges users face today. Whether you need to rip an MP3 track from an MP4 video lecture, bundle multi-page JPG receipts into an organized PDF report, or transcode Apple's modern HEIC pictures into standard JPG files, <strong>QuickConvert.pro</strong> makes the workflow completely seamless.
+              In the modern digital landscape, image quality and website performance go hand in hand. High-resolution images make web pages and portfolios look professional, but large file sizes cause slow loading times, poor search rankings, and bad user experience. Using an efficient, browser-based conversion tool ensures you get optimized file weights without visible pixelation or color distortion.
             </p>
 
             <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', margin: '20px 0 8px 0' }}>
-              1. How to Convert MP4 Videos to MP3 Audio in Seconds
+              Why Image Optimization and Format Conversion Matter
             </h2>
             <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.7, margin: '0 0 12px 0' }}>
-              Converting video to audio is essential for podcasters, students, and music creators. Unlike legacy conversion portals that make you wait in long server queues, QuickConvert.pro processes the audio stream directly inside your browser cache.
+              Every digital platform demands specific formats and sizes:
             </p>
             <ul style={{ margin: '0 0 18px 0', paddingLeft: '20px', fontSize: '13px', color: '#475569', lineHeight: 1.8 }}>
-              <li><strong>Step 1:</strong> Select <em>Video to MP3</em> or <em>MP4 to MP3</em> from the tool registry.</li>
-              <li><strong>Step 2:</strong> Tap <em>Choose Files</em> to pick your clip (up to 1GB supported).</li>
-              <li><strong>Step 3:</strong> Hit <em>Convert Now</em> to instantly download your audio track.</li>
+              <li><strong>JPG / JPEG:</strong> Best for complex photographs and multi-color images due to balanced compression.</li>
+              <li><strong>PNG:</strong> Ideal for graphics, logos, and screenshots that need transparent backgrounds and sharp borders.</li>
+              <li><strong>WebP:</strong> Google's modern format providing up to 30% superior compression over traditional PNGs and JPGs without dropping visual clarity.</li>
             </ul>
 
+            {/* Related Visual Graphic Box */}
+            <div style={{ display: 'flex', gap: '12px', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '14px', alignItems: 'center', marginBottom: '20px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Shield size={24} color="#2563eb" />
+              </div>
+              <div>
+                <h4 style={{ margin: '0 0 2px 0', fontSize: '13px', fontWeight: 800, color: '#0f172a' }}>Client-Side Browser Security</h4>
+                <p style={{ margin: 0, fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>All temporary files process securely through local memory and delete automatically.</p>
+              </div>
+            </div>
+
             <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', margin: '20px 0 8px 0' }}>
-              2. Merging JPG and PNG Photos into a Single PDF
+              Step-by-Step: Converting Files Easily on QuickConvert.pro
             </h2>
-            <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.7, margin: '0 0 18px 0' }}>
-              Government exam forms, academic assignments, and expense invoices frequently require multiple photos stitched into a unified PDF file. With our integrated <em>Image to PDF</em> engine, simply multi-select your pictures and generate a clean, printable PDF document instantaneously.
+            <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.7, margin: '0 0 12px 0' }}>
+              Converting and resizing files takes only three basic steps directly within your browser:
             </p>
+            <ol style={{ margin: '0 0 18px 0', paddingLeft: '20px', fontSize: '13px', color: '#475569', lineHeight: 1.8 }}>
+              <li><strong>Select and Upload Your Asset:</strong> Drag and drop your source file into the tool interface.</li>
+              <li><strong>Choose Output Settings:</strong> Select the target extension and your preferred balance.</li>
+              <li><strong>Download Instantly:</strong> Click convert and save your fully optimized asset locally.</li>
+            </ol>
 
             <div style={{ textAlign: 'center', marginTop: '24px' }}>
               <button 
@@ -419,7 +438,7 @@ export default function App() {
           </div>
         </div>
       </main>
-            {/* 6. Comprehensive Footer with Social Links & Centered Branding */}
+           {/* 6. Comprehensive Footer with Social Links & Centered Branding */}
       <footer style={{ backgroundColor: '#0f1f2e', color: '#f1f5f9', padding: '44px 20px 32px 20px', marginTop: 'auto' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '32px' }}>
           
