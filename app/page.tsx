@@ -13,11 +13,7 @@ import {
   Download, 
   Menu, 
   X, 
-  Mail, 
-  ArrowLeft,
-  Sparkles,
-  Zap,
-  CheckCircle2
+  ArrowLeft 
 } from 'lucide-react';
 
 interface ToolItem {
@@ -31,38 +27,31 @@ interface ToolItem {
 }
 
 const TOOL_REGISTRY: Record<string, ToolItem> = {
-  // Video
   'mp4-converter': { id: 'mp4-converter', name: 'MP4 Converter', title: 'MP4 Video Converter', desc: 'Convert and optimize any clip into smooth MP4 playback.', cat: 'Video', targetExt: 'MP4', acceptMime: 'video/*' },
   'video-to-gif': { id: 'video-to-gif', name: 'Video to GIF', title: 'Video to GIF Creator', desc: 'Transform short video snippets into animated lightweight GIF images.', cat: 'Video', targetExt: 'GIF', acceptMime: 'video/*' },
   'mov-to-mp4': { id: 'mov-to-mp4', name: 'MOV to MP4', title: 'MOV to MP4 Transcoder', desc: 'Turn iOS/macOS MOV videos into globally supported MP4 format.', cat: 'Video', targetExt: 'MP4', acceptMime: 'video/*' },
   'video-converter': { id: 'video-converter', name: 'Video Converter', title: 'Universal Video Converter', desc: 'Encode, re-wrap, and adapt video streams locally.', cat: 'Video', targetExt: 'MP4', acceptMime: 'video/*' },
-  // Audio
   'mp3-converter': { id: 'mp3-converter', name: 'MP3 Converter', title: 'MP3 Music Converter', desc: 'Render crystal-clear, high-bitrate MP3 audio files.', cat: 'Audio', targetExt: 'MP3', acceptMime: 'audio/*,video/*' },
   'mp4-to-mp3': { id: 'mp4-to-mp3', name: 'MP4 to MP3', title: 'MP4 Audio Ripper', desc: 'Extract background songs and vocal audio from MP4 files.', cat: 'Audio', targetExt: 'MP3', acceptMime: 'video/mp4,video/*' },
   'video-to-mp3': { id: 'video-to-mp3', name: 'Video to MP3', title: 'Video Soundtrack Extractor', desc: 'Strip out the sound track from any video file in seconds.', cat: 'Audio', targetExt: 'MP3', acceptMime: 'video/*' },
   'audio-converter': { id: 'audio-converter', name: 'Audio Converter', title: 'All-in-One Audio Converter', desc: 'Transcode songs into standard lossless WAV/MP3 sound.', cat: 'Audio', targetExt: 'WAV', acceptMime: 'audio/*' },
-  // Image
   'jpg-to-pdf': { id: 'jpg-to-pdf', name: 'JPG to PDF', title: 'JPG to PDF Generator', desc: 'Combine camera photos or snapshots into a clean PDF document.', cat: 'Image', targetExt: 'PDF', acceptMime: 'image/*' },
   'pdf-to-jpg': { id: 'pdf-to-jpg', name: 'PDF to JPG', title: 'PDF to JPG Extractor', desc: 'Convert PDF document pages into crisp JPG photo files.', cat: 'Image', targetExt: 'JPG', acceptMime: 'application/pdf,image/*' },
   'heic-to-jpg': { id: 'heic-to-jpg', name: 'HEIC to JPG', title: 'iPhone HEIC to JPG Converter', desc: 'Convert Apple High-Efficiency photos to universal JPG.', cat: 'Image', targetExt: 'JPG', acceptMime: 'image/*,.heic' },
   'image-to-pdf': { id: 'image-to-pdf', name: 'Image to PDF', title: 'Photo to PDF Binder', desc: 'Pack a batch of picture files into one unified PDF.', cat: 'Image', targetExt: 'PDF', acceptMime: 'image/*' },
   'image-converter': { id: 'image-converter', name: 'Image Converter', title: 'Universal Image Processor', desc: 'Compress and adapt images across JPG, PNG, and WebP.', cat: 'Image', targetExt: 'JPG', acceptMime: 'image/*' },
-  // Document & Ebook
   'pdf-to-word': { id: 'pdf-to-word', name: 'PDF to WORD', title: 'PDF to Word Doc Converter', desc: 'Export PDF text and structure into editable Word document format.', cat: 'Document', targetExt: 'DOC', acceptMime: 'application/pdf' },
   'epub-to-pdf': { id: 'epub-to-pdf', name: 'EPUB to PDF', title: 'EPUB to PDF Ebook Reader', desc: 'Turn digital book EPUB files into printable PDF layout.', cat: 'Document', targetExt: 'PDF', acceptMime: '.epub,text/plain' },
   'epub-to-mobi': { id: 'epub-to-mobi', name: 'EPUB to MOBI', title: 'EPUB to Kindle MOBI Maker', desc: 'Convert eBook manuscripts into Kindle-compatible MOBI books.', cat: 'Document', targetExt: 'MOBI', acceptMime: '.epub' },
   'document-converter': { id: 'document-converter', name: 'Document Converter', title: 'Universal Document Engine', desc: 'Convert text, logs, and docs into sharp PDF files.', cat: 'Document', targetExt: 'PDF', acceptMime: '.txt,.doc,.docx,.epub,text/plain' },
-  // Archive & Time
   'rar-to-zip': { id: 'rar-to-zip', name: 'RAR to Zip', title: 'RAR to ZIP Archive Packager', desc: 'Re-compress downloaded RAR files into compatible ZIP archives.', cat: 'Archive', targetExt: 'ZIP', acceptMime: '.rar,application/octet-stream' },
   'pst-to-est': { id: 'pst-to-est', name: 'PST to EST', title: 'PST to EST Time Calculator', desc: 'Real-time time shift from Pacific to Eastern Standard Time.', cat: 'Archive', targetExt: 'TXT', acceptMime: '' },
   'cst-to-est': { id: 'cst-to-est', name: 'CST to EST', title: 'CST to EST Time Calculator', desc: 'Quickly calculate time offset from Central to Eastern timezone.', cat: 'Archive', targetExt: 'TXT', acceptMime: '' },
   'archive-converter': { id: 'archive-converter', name: 'Archive Converter', title: 'Archive Stream Transcoder', desc: 'Extract and package compressed data into standard zip containers.', cat: 'Archive', targetExt: 'ZIP', acceptMime: '.tar,.gz,.rar,.7z' },
-  // Unit
   'lbs-to-kg': { id: 'lbs-to-kg', name: 'Lbs to Kg', title: 'Pounds to Kilograms Calculator', desc: 'Instant mass conversion from pounds (lbs) to kilos (kg).', cat: 'Unit', targetExt: 'TXT', acceptMime: '' },
   'kg-to-lbs': { id: 'kg-to-lbs', name: 'Kg to Lbs', title: 'Kilograms to Pounds Calculator', desc: 'Convert metric weight into imperial pounds seamlessly.', cat: 'Unit', targetExt: 'TXT', acceptMime: '' },
   'feet-to-meters': { id: 'feet-to-meters', name: 'Feet to Meters', title: 'Feet to Meters Height Tool', desc: 'Convert elevation and length measurements into metric meters.', cat: 'Unit', targetExt: 'TXT', acceptMime: '' },
   'unit-converter': { id: 'unit-converter', name: 'Unit Converter', title: 'Multi-Unit Calculation Suite', desc: 'Convert length, weight, and dimensions in real time.', cat: 'Unit', targetExt: 'TXT', acceptMime: '' },
-  // Web Apps
   'collage-maker': { id: 'collage-maker', name: 'Collage Maker', title: 'Photo Collage Grid Studio', desc: 'Stitch 2 to 12 pictures into an automatic clean collage.', cat: 'WebApps', targetExt: 'JPG', acceptMime: 'image/*' },
   'image-resizer': { id: 'image-resizer', name: 'Image Resizer', title: 'Photo Resolution Scaler', desc: 'Shrink or expand image dimensions without quality drops.', cat: 'WebApps', targetExt: 'JPG', acceptMime: 'image/*' },
   'crop-image': { id: 'crop-image', name: 'Crop Image', title: 'Direct Photo Crop Studio', desc: 'Crop picture borders precisely inside browser memory.', cat: 'WebApps', targetExt: 'JPG', acceptMime: 'image/*' },
@@ -76,7 +65,6 @@ export default function App() {
   const [statusMsg, setStatusMsg] = useState('');
   const [modal, setModal] = useState<string | null>(null);
 
-  // Dynamic values for unit/time tools
   const [calcInput, setCalcInput] = useState<number>(10);
   const [timeInput, setTimeInput] = useState<string>('12:00');
   const [pickedColor, setPickedColor] = useState<string>('#4f46e5');
@@ -198,24 +186,23 @@ export default function App() {
     setStatusMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-        return (
+  return (
     <div className="min-h-screen bg-[#fafbfc] text-slate-800 flex flex-col font-sans">
-            {/* Top Navbar */}
+      {/* 1. Header with Logo & Name */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 py-2.5 shadow-sm">
         <div className="max-w-xl mx-auto flex items-center justify-between">
           <button onClick={() => setModal('menu')} className="text-slate-700 hover:text-slate-900">
             <Menu className="w-6 h-6" />
           </button>
           <div onClick={() => { setSelectedToolKey(null); setFiles(null); }} className="flex items-center gap-2 cursor-pointer">
-            <img src="/logo.png" alt="QuickConvert Pro Logo" className="h-9 w-auto object-contain" />
-            <span className="font-extrabold text-xl text-slate-900 tracking-tight">QuickConvert<span className="text-blue-600">.pro</span></span>
+            <img src="/logo.png" alt="Quick ConvertPro Logo" className="h-9 w-auto object-contain" />
+            <span className="font-extrabold text-xl text-slate-900 tracking-tight">Quick <span className="text-blue-600">ConvertPro</span></span>
           </div>
           <a href="mailto:pavanibevara045@gmail.com" className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-semibold transition">
             Contact
           </a>
         </div>
       </header>
-
 
       {/* 2. Hero & Converter Section */}
       <main className="flex-1 max-w-xl w-full mx-auto px-4 py-8">
@@ -283,7 +270,6 @@ export default function App() {
             </div>
           </div>
         ) : (
-          /* Dropzone */
           <div className="bg-white border-2 border-dashed border-indigo-200 rounded-2xl p-6 sm:p-8 text-center shadow-sm mb-8">
             <label className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#5b6cf9] hover:bg-[#4b5cf0] text-white font-bold rounded-xl shadow-md cursor-pointer text-base transition">
               <span>Choose Files</span>
@@ -335,7 +321,7 @@ export default function App() {
           </div>
         )}
 
-        {/* 3. Value Feature Cards */}
+        {/* 3. Features Section */}
         <div className="space-y-8 text-center my-10 px-2">
           <div>
             <FileText className="w-8 h-8 text-slate-400 mx-auto mb-2 stroke-[1.5]" />
@@ -392,7 +378,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* 5. Upgrade Banner with Active Modal */}
+        {/* 5. Upgrade Banner */}
         <div className="bg-[#5b6cf9] text-white rounded-2xl p-6 text-center shadow-md mb-12">
           <h3 className="font-extrabold text-base mb-3 leading-snug">
             Need faster conversions with zero queues?<br />Join Free Today
@@ -405,7 +391,7 @@ export default function App() {
           </button>
         </div>
       </main>
-            {/* 6. Complete Footer with Working Tool Links */}
+            {/* 6. Footer with Tool Links & The Pavi Studio Branding */}
       <footer className="bg-[#102a43] text-slate-100 py-12 px-6 mt-auto">
         <div className="max-w-xl mx-auto space-y-8">
           <div>
@@ -489,7 +475,7 @@ export default function App() {
             </div>
           </div>
 
-          {/* Legal & About Links */}
+          {/* Legal Links */}
           <div className="space-y-1.5 text-xs text-slate-300 border-t border-slate-700 pt-4">
             <p onClick={() => setModal('about')} className="cursor-pointer hover:text-white">About Us</p>
             <p onClick={() => setModal('blog')} className="cursor-pointer hover:text-white">Blog</p>
@@ -498,19 +484,19 @@ export default function App() {
             <a href="mailto:pavanibevara045@gmail.com" className="block text-slate-300 hover:text-white">Contact</a>
           </div>
 
-                    {/* Footer Branding */}
+          {/* Footer Branding */}
           <div className="border-t border-slate-700 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
             <div className="flex items-center gap-2.5">
-              <img src="/logo.png" alt="QuickConvert Pro" className="h-7 w-auto object-contain rounded-full" />
-              <span className="font-bold text-white text-sm">QuickConvert Pro</span>
+              <img src="/logo.png" alt="Quick ConvertPro" className="h-7 w-auto object-contain rounded-full" />
+              <span className="font-bold text-white text-sm">Quick ConvertPro</span>
             </div>
-            <p className="text-xs text-slate-400">© QuickConvert.pro All rights reserved.</p>
+            <p className="text-xs text-slate-400">© Quick ConvertPro All rights reserved.</p>
             <p className="text-xs text-indigo-400 font-semibold">Created by The Pavi Studio</p>
           </div>
-
+        </div>
       </footer>
 
-      {/* Global Information & Sign Up Modals */}
+      {/* Global Information Modals */}
       {modal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl text-slate-800">
@@ -529,7 +515,7 @@ export default function App() {
                   <button onClick={() => { alert('Account registered successfully!'); setModal(null); }} className="w-full py-2 bg-blue-600 text-white font-bold rounded-lg">Sign Up Free</button>
                 </div>
               )}
-              {modal === 'about' && <p><strong>About Us:</strong> QuickConvert is a privacy-first web utility platform engineered by The Pavi Studio to convert multimedia files directly within client devices with zero server latency.</p>}
+              {modal === 'about' && <p><strong>About Us:</strong> Quick ConvertPro is a privacy-first web utility platform engineered by The Pavi Studio to convert multimedia files directly within client devices with zero server latency.</p>}
               {modal === 'terms' && <p><strong>Terms of Service:</strong> Users retain 100% intellectual property ownership of all uploaded media. Conversions occur solely on client device hardware.</p>}
               {modal === 'privacy' && <p><strong>Privacy Guarantee:</strong> We do not log, retain, or share user files. File buffers are automatically destroyed immediately after processing.</p>}
               {modal === 'security' && <p><strong>Security Protocols:</strong> Uses sandboxed HTML5 WebAssembly engines with complete isolation from third-party networks.</p>}
@@ -549,4 +535,6 @@ export default function App() {
       )}
     </div>
   );
-          }
+}
+
+        
