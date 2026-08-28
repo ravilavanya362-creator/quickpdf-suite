@@ -200,23 +200,22 @@ export default function App() {
   };
         return (
     <div className="min-h-screen bg-[#fafbfc] text-slate-800 flex flex-col font-sans">
-      {/* 1. Navbar */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 py-3">
+            {/* Top Navbar */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 py-2.5 shadow-sm">
         <div className="max-w-xl mx-auto flex items-center justify-between">
           <button onClick={() => setModal('menu')} className="text-slate-700 hover:text-slate-900">
             <Menu className="w-6 h-6" />
           </button>
-          <div onClick={() => { setSelectedToolKey(null); setFiles(null); }} className="flex items-center gap-1.5 cursor-pointer">
-            <div className="h-7 w-7 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">
-              ⇄
-            </div>
-            <span className="font-extrabold text-xl text-slate-900 tracking-tight">QuickConvert</span>
+          <div onClick={() => { setSelectedToolKey(null); setFiles(null); }} className="flex items-center gap-2 cursor-pointer">
+            <img src="/logo.png" alt="QuickConvert Pro Logo" className="h-9 w-auto object-contain" />
+            <span className="font-extrabold text-xl text-slate-900 tracking-tight">QuickConvert<span className="text-blue-600">.pro</span></span>
           </div>
           <a href="mailto:pavanibevara045@gmail.com" className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-semibold transition">
             Contact
           </a>
         </div>
       </header>
+
 
       {/* 2. Hero & Converter Section */}
       <main className="flex-1 max-w-xl w-full mx-auto px-4 py-8">
@@ -499,12 +498,16 @@ export default function App() {
             <a href="mailto:pavanibevara045@gmail.com" className="block text-slate-300 hover:text-white">Contact</a>
           </div>
 
-          {/* Copyright & Creator Stamp */}
-          <div className="border-t border-slate-700 pt-4 text-xs text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-2">
-            <p>© QuickConvert.pro All rights reserved.</p>
-            <p className="text-slate-300 font-semibold">Created by The Pavi Studio</p>
+                    {/* Footer Branding */}
+          <div className="border-t border-slate-700 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div className="flex items-center gap-2.5">
+              <img src="/logo.png" alt="QuickConvert Pro" className="h-7 w-auto object-contain rounded-full" />
+              <span className="font-bold text-white text-sm">QuickConvert Pro</span>
+            </div>
+            <p className="text-xs text-slate-400">© QuickConvert.pro All rights reserved.</p>
+            <p className="text-xs text-indigo-400 font-semibold">Created by The Pavi Studio</p>
           </div>
-        </div>
+
       </footer>
 
       {/* Global Information & Sign Up Modals */}
