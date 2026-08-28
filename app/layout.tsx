@@ -1,9 +1,14 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "QuickPDF Suite - Client-Side PDF Tools",
-  description: "Fast, 100% private in-browser PDF conversion, merge, split, and compression tools.",
+  title: 'QuickConvert Pro - Free Online File Converter',
+  description: 'Convert Video, Audio, Image, PDF, Documents and Units for free in your browser.',
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({
@@ -14,13 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta 
-          name="viewport" 
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" 
-        />
-        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="icon" href="/logo.png" type="image/png" />
       </head>
-      <body className="bg-slate-950 text-slate-100 antialiased">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
