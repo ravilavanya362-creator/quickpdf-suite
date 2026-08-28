@@ -66,11 +66,6 @@ export default function App() {
   const [modal, setModal] = useState<string | null>(null);
   const [imgError, setImgError] = useState(false);
 
-  const [calcInput, setCalcInput] = useState<number>(10);
-  const [timeInput, setTimeInput] = useState<string>('12:00');
-  const [pickedColor, setPickedColor] = useState<string>('#4f46e5');
-  const [copied, setCopied] = useState(false);
-
   const activeTool = selectedToolKey ? TOOL_REGISTRY[selectedToolKey] : null;
 
   const triggerDownload = (blob: Blob, fileName: string) => {
@@ -134,87 +129,89 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
     return (
-    <div className="min-h-screen bg-[#fafbfc] text-slate-800 flex flex-col font-sans">
-      {/* 1. Navbar */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 py-2.5 shadow-sm">
-        <div className="max-w-xl mx-auto flex items-center justify-between">
-          <button onClick={() => setModal('menu')} className="p-1 rounded-lg text-slate-700 hover:bg-slate-100">
-            <Menu className="w-6 h-6" />
+    <div style={{ minHeight: '100vh', backgroundColor: '#fafbfc', color: '#1e293b', display: 'flex', flexDirection: 'column', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      {/* 1. Header */}
+      <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 40, padding: '12px 16px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <button onClick={() => setModal('menu')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#334155' }}>
+            <Menu size={24} />
           </button>
           
-          <div onClick={() => { setSelectedToolKey(null); setFiles(null); }} className="flex items-center gap-2 cursor-pointer">
+          <div onClick={() => { setSelectedToolKey(null); setFiles(null); }} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
             {!imgError ? (
               <img 
                 src="/logo.png" 
                 alt="Logo" 
                 onError={() => setImgError(true)} 
-                className="h-8 w-8 object-contain rounded-lg" 
+                style={{ height: '32px', width: '32px', objectFit: 'contain', borderRadius: '6px' }} 
               />
             ) : (
-              <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">
+              <div style={{ height: '32px', width: '32px', borderRadius: '8px', backgroundColor: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontWeight: 'bold', fontSize: '14px' }}>
                 ⇄
               </div>
             )}
-            <span className="font-black text-xl text-slate-900 tracking-tight">Quick <span className="text-blue-600">ConvertPro</span></span>
+            <span style={{ fontWeight: 900, fontSize: '20px', color: '#0f172a', letterSpacing: '-0.5px' }}>
+              Quick <span style={{ color: '#2563eb' }}>ConvertPro</span>
+            </span>
           </div>
 
-          <a href="mailto:pavanibevara045@gmail.com" className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-semibold transition">
+          <a href="mailto:pavanibevara045@gmail.com" style={{ fontSize: '12px', backgroundColor: '#f1f5f9', color: '#334155', padding: '6px 12px', borderRadius: '9999px', textDecoration: 'none', fontWeight: 600 }}>
             Contact
           </a>
         </div>
       </header>
 
       {/* 2. Main Hero & Converter */}
-      <main className="flex-1 max-w-xl w-full mx-auto px-4 py-6 sm:py-8">
+      <main style={{ flex: 1, maxWidth: '600px', width: '100%', margin: '0 auto', padding: '24px 16px', boxSizing: 'border-box' }}>
         {activeTool && (
           <button 
             onClick={() => { setSelectedToolKey(null); setFiles(null); }}
-            className="inline-flex items-center gap-1 text-xs text-blue-600 font-bold mb-4 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#2563eb', fontWeight: 'bold', marginBottom: '16px', backgroundColor: '#eff6ff', padding: '6px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> Back to All Converters
+            <ArrowLeft size={14} /> Back to All Converters
           </button>
         )}
 
-        <div className="text-center mb-6">
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <h1 style={{ fontSize: '28px', fontWeight: 900, color: '#0f172a', margin: '0 0 8px 0' }}>
             {activeTool ? activeTool.title : 'File Converter'}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600">
+          <p style={{ fontSize: '14px', color: '#64748b', margin: 0 }}>
             {activeTool ? activeTool.desc : 'Easily convert files from one format to another, online.'}
           </p>
         </div>
 
         {/* Dropzone Container */}
-        <div className="bg-white border-2 border-dashed border-indigo-200 rounded-2xl p-6 sm:p-8 text-center shadow-sm mb-8">
-          <label className="inline-flex items-center justify-center gap-2 px-7 py-3 bg-[#5b6cf9] hover:bg-[#4b5cf0] text-white font-bold rounded-xl shadow-md cursor-pointer text-sm sm:text-base transition">
+        <div style={{ backgroundColor: '#ffffff', border: '2px dashed #c7d2fe', borderRadius: '16px', padding: '32px 16px', textAlign: 'center', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '32px' }}>
+          <label style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '14px 32px', backgroundColor: '#5b6cf9', color: '#ffffff', fontWeight: 'bold', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(91, 108, 249, 0.3)', cursor: 'pointer', fontSize: '16px' }}>
             <span>Choose Files</span>
-            <ChevronDown className="w-4 h-4 opacity-80" />
+            <ChevronDown size={18} />
             <input 
               type="file" 
               multiple 
               onChange={(e) => { setFiles(e.target.files); setStatusMsg(''); }} 
-              className="hidden" 
+              style={{ display: 'none' }} 
             />
           </label>
 
-          <p className="text-xs text-slate-600 mt-3 font-medium">
+          <p style={{ fontSize: '12px', color: '#64748b', marginTop: '12px', fontWeight: 500 }}>
             Max file size 1GB.{' '}
-            <button onClick={() => setModal('signup')} className="text-blue-600 font-bold hover:underline">
+            <span onClick={() => setModal('signup')} style={{ color: '#2563eb', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }}>
               Sign Up
-            </button>{' '}
+            </span>{' '}
             for more
           </p>
 
-          <p className="text-[11px] text-slate-500 mt-2 max-w-xs mx-auto leading-relaxed">
+          <p style={{ fontSize: '11px', color: '#94a3b8', marginTop: '8px', maxWidth: '320px', margin: '8px auto 0 auto', lineHeight: 1.5 }}>
             By proceeding, you confirm you own the rights to the files you upload and agree to our{' '}
-            <button onClick={() => setModal('terms')} className="text-blue-600 font-semibold hover:underline">
+            <span onClick={() => setModal('terms')} style={{ color: '#2563eb', cursor: 'pointer', textDecoration: 'underline' }}>
               Terms of Use
-            </button>
+            </span>
             .
           </p>
 
           {files && files.length > 0 && (
-            <div className="mt-4 p-3 bg-blue-50 text-blue-700 text-xs font-semibold rounded-xl border border-blue-100">
+            <div style={{ marginTop: '16px', padding: '10px', backgroundColor: '#eff6ff', color: '#1d4ed8', fontSize: '12px', fontWeight: 600, borderRadius: '8px', border: '1px solid #dbeafe' }}>
               ✓ {files.length} file(s) ready: {files[0].name}
             </div>
           )}
@@ -223,220 +220,215 @@ export default function App() {
             <button 
               onClick={handleProcess} 
               disabled={loading} 
-              className="w-full mt-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 shadow-md transition"
+              style={{ width: '100%', marginTop: '16px', padding: '12px', backgroundColor: '#2563eb', color: '#ffffff', fontWeight: 'bold', borderRadius: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', border: 'none', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
             >
-              {loading ? 'Processing...' : 'Convert Now'} <Download className="w-4 h-4" />
+              {loading ? 'Processing...' : 'Convert Now'} <Download size={16} />
             </button>
           )}
 
           {statusMsg && (
-            <p className="text-xs text-emerald-600 font-bold mt-3">{statusMsg}</p>
+            <p style={{ fontSize: '12px', color: '#059669', fontWeight: 'bold', marginTop: '12px' }}>{statusMsg}</p>
           )}
         </div>
 
         {/* 3. Feature Icons Section */}
-        <div className="space-y-8 text-center my-10 px-2">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', textAlign: 'center', margin: '40px 0' }}>
           <div>
-            <div className="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center mx-auto mb-2">
-              <FileText className="w-5 h-5" />
+            <div style={{ width: '40px', height: '40px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto' }}>
+              <FileText size={20} />
             </div>
-            <h3 className="font-bold text-base text-slate-900 mb-1">Universal Format Support</h3>
-            <p className="text-xs text-slate-600 leading-relaxed max-w-sm mx-auto">
+            <h3 style={{ fontWeight: 'bold', fontSize: '16px', color: '#0f172a', margin: '0 0 4px 0' }}>Universal Format Support</h3>
+            <p style={{ fontSize: '12px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
               Our multi-engine pipeline accommodates documents, videos, music tracks, and graphic files without requiring software installs.
             </p>
           </div>
 
           <div>
-            <div className="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center mx-auto mb-2">
-              <Cloud className="w-5 h-5" />
+            <div style={{ width: '40px', height: '40px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto' }}>
+              <Cloud size={20} />
             </div>
-            <h3 className="font-bold text-base text-slate-900 mb-1">Fully Cross-Platform</h3>
-            <p className="text-xs text-slate-600 leading-relaxed max-w-sm mx-auto">
+            <h3 style={{ fontWeight: 'bold', fontSize: '16px', color: '#0f172a', margin: '0 0 4px 0' }}>Fully Cross-Platform</h3>
+            <p style={{ fontSize: '12px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
               Operates effortlessly across iOS, Android, macOS, Linux, and Windows straight from modern mobile and desktop browsers.
             </p>
           </div>
 
           <div>
-            <div className="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center mx-auto mb-2">
-              <Shield className="w-5 h-5" />
+            <div style={{ width: '40px', height: '40px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto' }}>
+              <Shield size={20} />
             </div>
-            <h3 className="font-bold text-base text-slate-900 mb-1">Client-Side Data Privacy</h3>
-            <p className="text-xs text-slate-600 leading-relaxed max-w-sm mx-auto">
+            <h3 style={{ fontWeight: 'bold', fontSize: '16px', color: '#0f172a', margin: '0 0 4px 0' }}>Client-Side Data Privacy</h3>
+            <p style={{ fontSize: '12px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
               All computations execute locally on your physical device memory. No files are tracked, archived, or transferred to cloud disks.
             </p>
           </div>
         </div>
 
         {/* 4. Security Framework Box */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mb-10 text-left">
-          <h3 className="font-bold text-base text-slate-900 mb-2">Uncompromising User Security</h3>
-          <p className="text-xs text-slate-600 leading-relaxed mb-4">
+        <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '32px' }}>
+          <h3 style={{ fontWeight: 'bold', fontSize: '16px', color: '#0f172a', margin: '0 0 8px 0' }}>Uncompromising User Security</h3>
+          <p style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.6, marginBottom: '16px' }}>
             We hold document confidentiality to the highest standard. Processing happens in-memory without remote persistence or tracking.
           </p>
 
           <button 
             onClick={() => setModal('security')} 
-            className="w-full py-2.5 mb-6 border border-blue-600 text-blue-600 hover:bg-blue-50 text-xs font-bold rounded-xl transition"
+            style={{ width: '100%', padding: '10px', marginBottom: '20px', border: '1px solid #2563eb', color: '#2563eb', backgroundColor: 'transparent', fontSize: '12px', fontWeight: 'bold', borderRadius: '8px', cursor: 'pointer' }}
           >
             Explore our security specifications
           </button>
 
-          <div className="space-y-3.5 text-xs text-slate-700">
-            <div className="flex items-center gap-3">
-              <Lock className="w-4 h-4 text-slate-500" />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '12px', color: '#334155' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Lock size={16} color="#64748b" />
               <span>Zero-Storage Client Architecture</span>
             </div>
-            <div className="flex items-center gap-3">
-              <Server className="w-4 h-4 text-slate-500" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Server size={16} color="#64748b" />
               <span>Sandboxed Browser Execution</span>
             </div>
-            <div className="flex items-center gap-3">
-              <KeyRound className="w-4 h-4 text-slate-500" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <KeyRound size={16} color="#64748b" />
               <span>Full Local Control & Memory Purge</span>
             </div>
           </div>
         </div>
 
         {/* 5. Upgrade Banner */}
-        <div className="bg-[#5b6cf9] text-white rounded-2xl p-6 text-center shadow-md mb-12">
-          <h3 className="font-extrabold text-base mb-3 leading-snug">
+        <div style={{ backgroundColor: '#5b6cf9', color: '#ffffff', borderRadius: '16px', padding: '24px', textAlign: 'center', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', marginBottom: '40px' }}>
+          <h3 style={{ fontWeight: 800, fontSize: '16px', margin: '0 0 12px 0', lineHeight: 1.4 }}>
             Need faster conversions with zero queues?<br />Join Free Today
           </h3>
           <button 
             onClick={() => setModal('signup')} 
-            className="px-6 py-2 bg-[#ffcc00] hover:bg-[#f5c400] text-slate-900 font-bold rounded-lg text-xs shadow transition"
+            style={{ padding: '8px 24px', backgroundColor: '#ffcc00', border: 'none', color: '#0f172a', fontWeight: 'bold', borderRadius: '8px', fontSize: '12px', cursor: 'pointer' }}
           >
             Sign Up
           </button>
         </div>
       </main>
-            {/* 6. Footer */}
-      <footer className="bg-[#102a43] text-slate-100 py-12 px-6 mt-auto">
-        <div className="max-w-xl mx-auto space-y-8">
+           {/* 6. Footer */}
+      <footer style={{ backgroundColor: '#102a43', color: '#f1f5f9', padding: '40px 20px', marginTop: 'auto' }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '28px' }}>
           <div>
-            <h4 className="text-sm font-bold text-white mb-2.5">Video Converter</h4>
-            <div className="space-y-1.5 text-xs text-slate-300">
-              <p onClick={() => selectTool('mp4-converter')} className="cursor-pointer hover:text-white">MP4 Converter</p>
-              <p onClick={() => selectTool('video-to-gif')} className="cursor-pointer hover:text-white">Video to GIF</p>
-              <p onClick={() => selectTool('mov-to-mp4')} className="cursor-pointer hover:text-white">MOV to MP4</p>
-              <p onClick={() => selectTool('video-converter')} className="cursor-pointer hover:text-white">Video Converter</p>
+            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Video Converter</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
+              <span onClick={() => selectTool('mp4-converter')} style={{ cursor: 'pointer' }}>MP4 Converter</span>
+              <span onClick={() => selectTool('video-to-gif')} style={{ cursor: 'pointer' }}>Video to GIF</span>
+              <span onClick={() => selectTool('mov-to-mp4')} style={{ cursor: 'pointer' }}>MOV to MP4</span>
+              <span onClick={() => selectTool('video-converter')} style={{ cursor: 'pointer' }}>Video Converter</span>
             </div>
           </div>
 
           <div>
-            <h4 className="text-sm font-bold text-white mb-2.5">Audio Converter</h4>
-            <div className="space-y-1.5 text-xs text-slate-300">
-              <p onClick={() => selectTool('mp3-converter')} className="cursor-pointer hover:text-white">MP3 Converter</p>
-              <p onClick={() => selectTool('mp4-to-mp3')} className="cursor-pointer hover:text-white">MP4 to MP3</p>
-              <p onClick={() => selectTool('video-to-mp3')} className="cursor-pointer hover:text-white">Video to MP3</p>
-              <p onClick={() => selectTool('audio-converter')} className="cursor-pointer hover:text-white">Audio Converter</p>
+            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Audio Converter</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
+              <span onClick={() => selectTool('mp3-converter')} style={{ cursor: 'pointer' }}>MP3 Converter</span>
+              <span onClick={() => selectTool('mp4-to-mp3')} style={{ cursor: 'pointer' }}>MP4 to MP3</span>
+              <span onClick={() => selectTool('video-to-mp3')} style={{ cursor: 'pointer' }}>Video to MP3</span>
+              <span onClick={() => selectTool('audio-converter')} style={{ cursor: 'pointer' }}>Audio Converter</span>
             </div>
           </div>
 
           <div>
-            <h4 className="text-sm font-bold text-white mb-2.5">Image Converter</h4>
-            <div className="space-y-1.5 text-xs text-slate-300">
-              <p onClick={() => selectTool('jpg-to-pdf')} className="cursor-pointer hover:text-white">JPG to PDF</p>
-              <p onClick={() => selectTool('pdf-to-jpg')} className="cursor-pointer hover:text-white">PDF to JPG</p>
-              <p onClick={() => selectTool('heic-to-jpg')} className="cursor-pointer hover:text-white">HEIC to JPG</p>
-              <p onClick={() => selectTool('image-to-pdf')} className="cursor-pointer hover:text-white">Image to PDF</p>
-              <p onClick={() => selectTool('image-converter')} className="cursor-pointer hover:text-white">Image Converter</p>
+            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Image Converter</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
+              <span onClick={() => selectTool('jpg-to-pdf')} style={{ cursor: 'pointer' }}>JPG to PDF</span>
+              <span onClick={() => selectTool('pdf-to-jpg')} style={{ cursor: 'pointer' }}>PDF to JPG</span>
+              <span onClick={() => selectTool('heic-to-jpg')} style={{ cursor: 'pointer' }}>HEIC to JPG</span>
+              <span onClick={() => selectTool('image-to-pdf')} style={{ cursor: 'pointer' }}>Image to PDF</span>
+              <span onClick={() => selectTool('image-converter')} style={{ cursor: 'pointer' }}>Image Converter</span>
             </div>
           </div>
 
           <div>
-            <h4 className="text-sm font-bold text-white mb-2.5">Document & Ebook</h4>
-            <div className="space-y-1.5 text-xs text-slate-300">
-              <p onClick={() => selectTool('pdf-to-word')} className="cursor-pointer hover:text-white">PDF to WORD</p>
-              <p onClick={() => selectTool('epub-to-pdf')} className="cursor-pointer hover:text-white">EPUB to PDF</p>
-              <p onClick={() => selectTool('epub-to-mobi')} className="cursor-pointer hover:text-white">EPUB to MOBI</p>
-              <p onClick={() => selectTool('document-converter')} className="cursor-pointer hover:text-white">Document Converter</p>
+            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Document & Ebook</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
+              <span onClick={() => selectTool('pdf-to-word')} style={{ cursor: 'pointer' }}>PDF to WORD</span>
+              <span onClick={() => selectTool('epub-to-pdf')} style={{ cursor: 'pointer' }}>EPUB to PDF</span>
+              <span onClick={() => selectTool('epub-to-mobi')} style={{ cursor: 'pointer' }}>EPUB to MOBI</span>
+              <span onClick={() => selectTool('document-converter')} style={{ cursor: 'pointer' }}>Document Converter</span>
             </div>
           </div>
 
           <div>
-            <h4 className="text-sm font-bold text-white mb-2.5">Archive & Time</h4>
-            <div className="space-y-1.5 text-xs text-slate-300">
-              <p onClick={() => selectTool('rar-to-zip')} className="cursor-pointer hover:text-white">RAR to Zip</p>
-              <p onClick={() => selectTool('pst-to-est')} className="cursor-pointer hover:text-white">PST to EST</p>
-              <p onClick={() => selectTool('cst-to-est')} className="cursor-pointer hover:text-white">CST to EST</p>
-              <p onClick={() => selectTool('archive-converter')} className="cursor-pointer hover:text-white">Archive Converter</p>
+            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Archive & Time</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
+              <span onClick={() => selectTool('rar-to-zip')} style={{ cursor: 'pointer' }}>RAR to Zip</span>
+              <span onClick={() => selectTool('pst-to-est')} style={{ cursor: 'pointer' }}>PST to EST</span>
+              <span onClick={() => selectTool('cst-to-est')} style={{ cursor: 'pointer' }}>CST to EST</span>
+              <span onClick={() => selectTool('archive-converter')} style={{ cursor: 'pointer' }}>Archive Converter</span>
             </div>
           </div>
 
           <div>
-            <h4 className="text-sm font-bold text-white mb-2.5">Unit Converter</h4>
-            <div className="space-y-1.5 text-xs text-slate-300">
-              <p onClick={() => selectTool('lbs-to-kg')} className="cursor-pointer hover:text-white">Lbs to Kg</p>
-              <p onClick={() => selectTool('kg-to-lbs')} className="cursor-pointer hover:text-white">Kg to Lbs</p>
-              <p onClick={() => selectTool('feet-to-meters')} className="cursor-pointer hover:text-white">Feet to Meters</p>
-              <p onClick={() => selectTool('unit-converter')} className="cursor-pointer hover:text-white">Unit Converter</p>
+            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Unit Converter</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
+              <span onClick={() => selectTool('lbs-to-kg')} style={{ cursor: 'pointer' }}>Lbs to Kg</span>
+              <span onClick={() => selectTool('kg-to-lbs')} style={{ cursor: 'pointer' }}>Kg to Lbs</span>
+              <span onClick={() => selectTool('feet-to-meters')} style={{ cursor: 'pointer' }}>Feet to Meters</span>
+              <span onClick={() => selectTool('unit-converter')} style={{ cursor: 'pointer' }}>Unit Converter</span>
             </div>
           </div>
 
           <div>
-            <h4 className="text-sm font-bold text-white mb-2.5">Web Apps</h4>
-            <div className="space-y-1.5 text-xs text-slate-300">
-              <p onClick={() => selectTool('collage-maker')} className="cursor-pointer hover:text-white">Collage Maker</p>
-              <p onClick={() => selectTool('image-resizer')} className="cursor-pointer hover:text-white">Image Resizer</p>
-              <p onClick={() => selectTool('crop-image')} className="cursor-pointer hover:text-white">Crop Image</p>
-              <p onClick={() => selectTool('color-picker')} className="cursor-pointer hover:text-white">Color Picker</p>
+            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Web Apps</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
+              <span onClick={() => selectTool('collage-maker')} style={{ cursor: 'pointer' }}>Collage Maker</span>
+              <span onClick={() => selectTool('image-resizer')} style={{ cursor: 'pointer' }}>Image Resizer</span>
+              <span onClick={() => selectTool('crop-image')} style={{ cursor: 'pointer' }}>Crop Image</span>
+              <span onClick={() => selectTool('color-picker')} style={{ cursor: 'pointer' }}>Color Picker</span>
             </div>
           </div>
 
           {/* Legal Links */}
-          <div className="space-y-1.5 text-xs text-slate-300 border-t border-slate-700 pt-4">
-            <p onClick={() => setModal('about')} className="cursor-pointer hover:text-white">About Us</p>
-            <p onClick={() => setModal('blog')} className="cursor-pointer hover:text-white">Blog</p>
-            <p onClick={() => setModal('terms')} className="cursor-pointer hover:text-white">Terms</p>
-            <p onClick={() => setModal('privacy')} className="cursor-pointer hover:text-white">Privacy</p>
-            <a href="mailto:pavanibevara045@gmail.com" className="block text-slate-300 hover:text-white">Contact</a>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1', borderTop: '1px solid #334e68', paddingTop: '16px' }}>
+            <span onClick={() => setModal('about')} style={{ cursor: 'pointer' }}>About Us</span>
+            <span onClick={() => setModal('blog')} style={{ cursor: 'pointer' }}>Blog</span>
+            <span onClick={() => setModal('terms')} style={{ cursor: 'pointer' }}>Terms</span>
+            <span onClick={() => setModal('privacy')} style={{ cursor: 'pointer' }}>Privacy</span>
+            <a href="mailto:pavanibevara045@gmail.com" style={{ color: '#cbd5e1', textDecoration: 'none' }}>Contact</a>
           </div>
 
           {/* Branding Footer */}
-          <div className="border-t border-slate-700 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-            <div className="flex items-center gap-2">
-              <div className="h-6 w-6 rounded-lg bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
-                ⇄
-              </div>
-              <span className="font-bold text-white text-sm">Quick ConvertPro</span>
-            </div>
-            <p className="text-xs text-slate-400">© Quick ConvertPro All rights reserved.</p>
-            <p className="text-xs text-indigo-400 font-semibold">Created by The Pavi Studio</p>
+          <div style={{ borderTop: '1px solid #334e68', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', flexWrap: 'wrap', gap: '8px' }}>
+            <span style={{ fontWeight: 'bold', color: '#ffffff' }}>Quick ConvertPro</span>
+            <span style={{ color: '#94a3b8' }}>© Quick ConvertPro</span>
+            <span style={{ color: '#818cf8', fontWeight: 600 }}>Created by The Pavi Studio</span>
           </div>
         </div>
       </footer>
 
       {/* Global Modal */}
       {modal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl text-slate-800">
-            <div className="flex justify-between items-center mb-3 border-b border-slate-100 pb-2">
-              <h3 className="font-bold text-sm capitalize">{modal}</h3>
-              <button onClick={() => setModal(null)} className="text-slate-400 hover:text-slate-600">
-                <X className="w-5 h-5" />
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', zIndex: 50 }}>
+          <div style={{ backgroundColor: '#ffffff', borderRadius: '16px', padding: '24px', maxWidth: '360px', width: '100%', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', color: '#1e293b' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '8px' }}>
+              <h3 style={{ fontWeight: 'bold', fontSize: '14px', textTransform: 'capitalize', margin: 0 }}>{modal}</h3>
+              <button onClick={() => setModal(null)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+                <X size={20} />
               </button>
             </div>
-            <div className="text-xs text-slate-600 leading-relaxed space-y-2">
+            <div style={{ fontSize: '12px', color: '#475569', lineHeight: 1.6 }}>
               {modal === 'signup' && (
                 <div>
-                  <p className="font-bold text-slate-900 mb-1">Create Free Account</p>
-                  <p className="mb-3">Sign up to enjoy batch queues, 1GB file conversions, and lightning processing speeds.</p>
-                  <input type="email" placeholder="Enter your email" className="w-full p-2.5 border border-slate-300 rounded-lg mb-2 text-xs" />
-                  <button onClick={() => { alert('Account registered successfully!'); setModal(null); }} className="w-full py-2 bg-blue-600 text-white font-bold rounded-lg">Sign Up Free</button>
+                  <p style={{ fontWeight: 'bold', color: '#0f172a', margin: '0 0 4px 0' }}>Create Free Account</p>
+                  <p style={{ margin: '0 0 12px 0' }}>Sign up to enjoy batch queues, 1GB conversions, and fast processing.</p>
+                  <input type="email" placeholder="Enter your email" style={{ width: '100%', padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', marginBottom: '8px', boxSizing: 'border-box' }} />
+                  <button onClick={() => { alert('Account registered successfully!'); setModal(null); }} style={{ width: '100%', padding: '10px', backgroundColor: '#2563eb', color: '#ffffff', fontWeight: 'bold', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Sign Up Free</button>
                 </div>
               )}
-              {modal === 'about' && <p><strong>About Us:</strong> Quick ConvertPro is a privacy-first web utility platform engineered by The Pavi Studio to convert multimedia files directly within client devices with zero server latency.</p>}
-              {modal === 'terms' && <p><strong>Terms of Service:</strong> Users retain 100% intellectual property ownership of all uploaded media. Conversions occur solely on client device hardware.</p>}
-              {modal === 'privacy' && <p><strong>Privacy Guarantee:</strong> We do not log, retain, or share user files. File buffers are automatically destroyed immediately after processing.</p>}
-              {modal === 'security' && <p><strong>Security Protocols:</strong> Uses sandboxed HTML5 WebAssembly engines with complete isolation from third-party networks.</p>}
-              {modal === 'blog' && <p><strong>Blog:</strong> Discover how WebAssembly and in-browser Canvas technology enable instant media conversions without server bottlenecks.</p>}
+              {modal === 'about' && <p><strong>About Us:</strong> Quick ConvertPro is a privacy-first web utility platform engineered by The Pavi Studio to convert multimedia files directly in client browsers with zero latency.</p>}
+              {modal === 'terms' && <p><strong>Terms of Service:</strong> Users retain 100% intellectual property ownership of uploaded files. Processing occurs solely on client hardware.</p>}
+              {modal === 'privacy' && <p><strong>Privacy Guarantee:</strong> We do not log or store files on remote servers.</p>}
+              {modal === 'security' && <p><strong>Security:</strong> Sandboxed HTML5 WebAssembly execution with instant memory purge.</p>}
+              {modal === 'blog' && <p><strong>Blog:</strong> Discover how WebAssembly and in-browser Canvas enable instant client-side file conversions.</p>}
               {modal === 'menu' && (
-                <div className="space-y-2 font-medium">
-                  <p onClick={() => { setSelectedToolKey(null); setModal(null); }} className="cursor-pointer hover:text-blue-600">🏠 Home</p>
-                  <p onClick={() => { setModal('about'); }} className="cursor-pointer hover:text-blue-600">ℹ️ About Us</p>
-                  <p onClick={() => { setModal('signup'); }} className="cursor-pointer hover:text-blue-600">✨ Sign Up Free</p>
-                  <a href="mailto:pavanibevara045@gmail.com" className="block hover:text-blue-600">📧 Email Developer</a>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontWeight: 500 }}>
+                  <span onClick={() => { setSelectedToolKey(null); setModal(null); }} style={{ cursor: 'pointer', color: '#2563eb' }}>🏠 Home</span>
+                  <span onClick={() => setModal('about')} style={{ cursor: 'pointer' }}>ℹ️ About Us</span>
+                  <span onClick={() => setModal('signup')} style={{ cursor: 'pointer' }}>✨ Sign Up Free</span>
+                  <a href="mailto:pavanibevara045@gmail.com" style={{ color: '#2563eb', textDecoration: 'none' }}>📧 Email Developer</a>
                 </div>
               )}
             </div>
@@ -445,5 +437,4 @@ export default function App() {
       )}
     </div>
   );
-}
-
+              }
