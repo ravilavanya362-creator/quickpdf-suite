@@ -129,7 +129,7 @@ export default function App() {
   };
     return (
     <div style={{ minHeight: '100vh', backgroundColor: '#fafbfc', color: '#1e293b', display: 'flex', flexDirection: 'column', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
-      {/* 1. Header with logo1.png */}
+      {/* 1. Header with Embedded Gradient Q-Logo */}
       <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 40, padding: '10px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <button onClick={() => setModal('menu')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#334155' }}>
@@ -137,11 +137,15 @@ export default function App() {
           </button>
           
           <div onClick={() => { setSelectedToolKey(null); setFiles(null); }} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-            <img 
-              src="/logo1.png" 
-              alt="QuickConvert Logo" 
-              style={{ height: '36px', width: '36px', objectFit: 'contain', borderRadius: '8px' }} 
-            />
+            {/* Embedded Ultra-HD Vector Emblem */}
+            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #0284c7, #2563eb, #7c3aed)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 3px 8px rgba(37, 99, 235, 0.35)', flexShrink: 0 }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C14.07 21 15.9768 20.3045 17.5 19.1338L19.2929 20.9267C19.6834 21.3172 20.3166 21.3172 20.7071 20.9267C21.0976 20.5362 21.0976 19.903 20.7071 19.5125L18.9142 17.7196C20.218 16.1437 21 14.1627 21 12C21 7.02944 16.9706 3 12 3Z" fill="white" fillOpacity="0.25"/>
+                <path d="M15 8L18 11M18 11L15 14M18 11H9C7.34315 11 6 12.3431 6 14" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M9 16L6 13M6 13L9 10M6 13H15C16.6569 13 18 11.6569 18 10" stroke="#ffeb3b" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            
             <span style={{ fontWeight: 900, fontSize: '20px', color: '#0f172a', letterSpacing: '-0.5px' }}>
               QuickConvert<span style={{ color: '#2563eb' }}>.pro</span>
             </span>
@@ -299,7 +303,7 @@ export default function App() {
           </button>
         </div>
       </main>
-          {/* 6. Footer with logo1.png & Correct Branding */}
+            {/* 6. Footer with Vector Logo & Branding */}
       <footer style={{ backgroundColor: '#102a43', color: '#f1f5f9', padding: '40px 20px', marginTop: 'auto' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '28px' }}>
           <div>
@@ -386,7 +390,12 @@ export default function App() {
           <div style={{ borderTop: '1px solid #334e68', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <img src="/logo1.png" alt="Logo" style={{ height: '22px', width: '22px', objectFit: 'contain', borderRadius: '4px' }} />
+                <div style={{ width: '22px', height: '22px', borderRadius: '6px', background: 'linear-gradient(135deg, #0284c7, #2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M15 8L18 11M18 11L15 14M18 11H9C7.34315 11 6 12.3431 6 14" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M9 16L6 13M6 13L9 10M6 13H15C16.6569 13 18 11.6569 18 10" stroke="#ffeb3b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
                 <span style={{ fontWeight: 'bold', color: '#ffffff', fontSize: '13px' }}>QuickConvert.pro</span>
               </div>
               <span style={{ color: '#94a3b8', fontSize: '11px' }}>© 2026 QuickConvert.pro. All rights reserved.</span>
@@ -437,4 +446,4 @@ export default function App() {
       )}
     </div>
   );
-}
+                }
