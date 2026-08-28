@@ -97,6 +97,18 @@ const FAQ_LIST = [
   {
     q: 'Which operating systems and browsers are supported?',
     a: 'Everything runs directly via modern HTML5 & WebAssembly engines. It supports Android Chrome, Apple Safari (iOS/macOS), Windows Edge, and Linux browsers with zero installation.'
+  },
+  {
+    q: 'Do I need to install any software or browser extensions?',
+    a: 'No installation required! QuickConvert.pro is a fully web-based platform that operates straight from your mobile or desktop browser.'
+  },
+  {
+    q: 'How long do files stay on your server?',
+    a: 'We operate on a zero-storage architecture. Since files process entirely on your physical device memory, nothing is ever saved or stored on our servers.'
+  },
+  {
+    q: 'Can I use these tools on my smartphone or tablet?',
+    a: 'Yes, our platform is fully responsive and optimized for touch screens across Android and iOS mobile devices.'
   }
 ];
 
@@ -173,7 +185,7 @@ export default function App() {
     setStatusMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-    return (
+   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#fafbfc', color: '#1e293b', display: 'flex', flexDirection: 'column', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       {/* 1. Header */}
       <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 40, padding: '10px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
@@ -320,6 +332,35 @@ export default function App() {
               </div>
             </div>
 
+            {/* Why Choose Us Section (Added for SEO Length) */}
+            <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '32px' }}>
+              <h3 style={{ fontWeight: 800, fontSize: '17px', color: '#0f172a', margin: '0 0 10px 0', textAlign: 'center' }}>
+                Why Choose QuickConvert.pro?
+              </h3>
+              <p style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.6, textAlign: 'center', marginBottom: '18px' }}>
+                Engineered for speed, security, and universal compatibility. Here is why thousands of users trust our platform daily:
+              </p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '12px', color: '#334155' }}>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                  <span style={{ color: '#2563eb', fontWeight: 'bold' }}>✓</span>
+                  <div><strong>100% Free & Unlimited:</strong> No hidden subscription fees, watermark restrictions, or mandatory sign-ups.</div>
+                </div>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                  <span style={{ color: '#2563eb', fontWeight: 'bold' }}>✓</span>
+                  <div><strong>Client-Side Privacy Engine:</strong> Files execute directly inside browser RAM. Nothing gets uploaded or stored on cloud hard drives.</div>
+                </div>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                  <span style={{ color: '#2563eb', fontWeight: 'bold' }}>✓</span>
+                  <div><strong>Lightning Fast Multi-Engine:</strong> Optimized WebAssembly pipelines deliver processed files up to 10x faster.</div>
+                </div>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                  <span style={{ color: '#2563eb', fontWeight: 'bold' }}>✓</span>
+                  <div><strong>Cross-Device Support:</strong> Fully responsive interface that works smoothly on Android, iOS, Windows, and macOS browsers.</div>
+                </div>
+              </div>
+            </div>
+
             {/* Security Box */}
             <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '32px' }}>
               <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 8px 0' }}>Uncompromising User Security</h3>
@@ -351,7 +392,7 @@ export default function App() {
             </div>
           </>
         )}
-                {currentView === 'blog-list' && (
+               {currentView === 'blog-list' && (
           <div>
             <button 
               onClick={() => setCurrentView('home')}
@@ -449,7 +490,7 @@ export default function App() {
           </div>
         )}
 
-        {/* FAQs Section */}
+        {/* Extended FAQs Section */}
         <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '36px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
             <HelpCircle size={20} color="#2563eb" />
@@ -479,7 +520,7 @@ export default function App() {
           </div>
         </div>
       </main>
-            {/* 6. Comprehensive Footer with Social Links & Centered Branding */}
+         {/* 6. Comprehensive Footer with Social Links & Centered Branding */}
       <footer style={{ backgroundColor: '#0f1f2e', color: '#f1f5f9', padding: '44px 20px 32px 20px', marginTop: 'auto' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '32px' }}>
           
@@ -587,5 +628,3 @@ export default function App() {
     </div>
   );
 }
-
-      
