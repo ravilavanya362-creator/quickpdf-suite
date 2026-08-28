@@ -62,20 +62,16 @@ const TOOL_REGISTRY: Record<string, ToolItem> = {
 
 const FAQ_LIST = [
   {
-    q: 'Is QuickConvert.pro safe to use?',
-    a: 'Yes, absolutely! All conversions run entirely inside your browser memory using client-side technology. Your files are never uploaded, transferred, or stored on external servers.'
+    q: 'Is QuickConvert.pro safe to use for sensitive documents?',
+    a: 'Yes, 100%! All conversions process strictly in-memory inside your local web browser sandbox. Files never upload to any remote cloud database, ensuring total confidentiality.'
   },
   {
-    q: 'Are the tools really 100% free?',
-    a: 'Yes, all file converters, PDF mergers, image tools, and unit calculators are completely free to use with no hidden charges or subscription limits.'
+    q: 'Can I convert large videos and multi-page PDFs for free?',
+    a: 'Absolutely. QuickConvert.pro provides unlimited conversions up to 1GB per file without requiring subscriptions, watermarks, or credit card entries.'
   },
   {
-    q: 'What is the maximum file size supported?',
-    a: 'Since processing executes directly on your local device hardware, files up to 1GB can be processed seamlessly based on your browser and RAM capabilities.'
-  },
-  {
-    q: 'Do I need to install any software or extensions?',
-    a: 'No software or extension installation is required. Everything runs smoothly inside any modern mobile or desktop browser on Android, iOS, Windows, Mac, or Linux.'
+    q: 'Which operating systems and browsers are supported?',
+    a: 'Everything runs directly via modern HTML5 & WebAssembly engines. It supports Android Chrome, Apple Safari (iOS/macOS), Windows Edge, and Linux browsers with zero installation.'
   }
 ];
 
@@ -86,6 +82,7 @@ export default function App() {
   const [statusMsg, setStatusMsg] = useState('');
   const [modal, setModal] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [currentView, setCurrentView] = useState<'home' | 'blog'>('home');
 
   const activeTool = selectedToolKey ? TOOL_REGISTRY[selectedToolKey] : null;
 
@@ -144,6 +141,7 @@ export default function App() {
   };
 
   const selectTool = (key: string) => {
+    setCurrentView('home');
     setSelectedToolKey(key);
     setFiles(null);
     setStatusMsg('');
@@ -152,13 +150,13 @@ export default function App() {
     return (
     <div style={{ minHeight: '100vh', backgroundColor: '#fafbfc', color: '#1e293b', display: 'flex', flexDirection: 'column', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       {/* 1. Header */}
-      <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 40, padding: '8px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 40, padding: '10px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <button onClick={() => setModal('menu')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#334155' }}>
             <Menu size={24} />
           </button>
           
-          <div onClick={() => { setSelectedToolKey(null); setFiles(null); }} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+          <div onClick={() => { setCurrentView('home'); setSelectedToolKey(null); setFiles(null); }} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
             <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'linear-gradient(145deg, #0ea5e9, #2563eb, #6366f1)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(37,99,235,0.3)', flexShrink: 0 }}>
               <div style={{ width: '22px', height: '22px', borderRadius: '50%', backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)' }}>
                 <span style={{ color: '#eab308', fontWeight: 900, fontSize: '13px', lineHeight: 1 }}>⇄</span>
@@ -170,152 +168,228 @@ export default function App() {
             </span>
           </div>
 
-          <a href="mailto:pavanibevara045@gmail.com" style={{ fontSize: '12px', backgroundColor: '#f1f5f9', color: '#334155', padding: '6px 14px', borderRadius: '9999px', textDecoration: 'none', fontWeight: 600 }}>
-            Contact
-          </a>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button 
+              onClick={() => { setCurrentView(currentView === 'home' ? 'blog' : 'home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              style={{ fontSize: '12px', backgroundColor: currentView === 'blog' ? '#2563eb' : '#eff6ff', color: currentView === 'blog' ? '#ffffff' : '#2563eb', padding: '6px 12px', borderRadius: '9999px', border: 'none', fontWeight: 700, cursor: 'pointer' }}
+            >
+              {currentView === 'home' ? 'Blog' : 'Converter'}
+            </button>
+            <a href="mailto:pavanibevara045@gmail.com" style={{ fontSize: '12px', backgroundColor: '#f1f5f9', color: '#334155', padding: '6px 12px', borderRadius: '9999px', textDecoration: 'none', fontWeight: 600 }}>
+              Contact
+            </a>
+          </div>
         </div>
       </header>
 
-      {/* 2. Main Hero & Brand Section */}
+      {/* 2. Main Content Body */}
       <main style={{ flex: 1, maxWidth: '600px', width: '100%', margin: '0 auto', padding: '24px 16px', boxSizing: 'border-box' }}>
-        {activeTool && (
-          <button 
-            onClick={() => { setSelectedToolKey(null); setFiles(null); }}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#2563eb', fontWeight: 'bold', marginBottom: '16px', backgroundColor: '#eff6ff', padding: '6px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}
-          >
-            <ArrowLeft size={14} /> Back to All Converters
-          </button>
-        )}
+        
+        {currentView === 'home' ? (
+          <>
+            {activeTool && (
+              <button 
+                onClick={() => { setSelectedToolKey(null); setFiles(null); }}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#2563eb', fontWeight: 'bold', marginBottom: '16px', backgroundColor: '#eff6ff', padding: '6px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}
+              >
+                <ArrowLeft size={14} /> Back to All Converters
+              </button>
+            )}
 
-        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
-            <div style={{ width: '70px', height: '70px', borderRadius: '20px', background: 'linear-gradient(145deg, #0ea5e9, #2563eb, #6366f1)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 20px rgba(37,99,235,0.35)' }}>
-              <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.15)' }}>
-                <span style={{ color: '#eab308', fontWeight: 900, fontSize: '24px', lineHeight: 1 }}>⇄</span>
+            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
+                <div style={{ width: '70px', height: '70px', borderRadius: '20px', background: 'linear-gradient(145deg, #0ea5e9, #2563eb, #6366f1)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 20px rgba(37,99,235,0.35)' }}>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.15)' }}>
+                    <span style={{ color: '#eab308', fontWeight: 900, fontSize: '24px', lineHeight: 1 }}>⇄</span>
+                  </div>
+                </div>
+              </div>
+
+              <h2 style={{ fontSize: '24px', fontWeight: 900, color: '#0f172a', letterSpacing: '-0.5px', textTransform: 'uppercase', margin: '0 0 2px 0' }}>
+                QUICK CONVERT <span style={{ color: '#2563eb' }}>PRO</span>
+              </h2>
+              <p style={{ fontSize: '10px', color: '#64748b', fontWeight: 800, letterSpacing: '2.5px', textTransform: 'uppercase', margin: '0 0 18px 0' }}>
+                CONVERT • EDIT • MERGE • MORE
+              </p>
+              
+              <h1 style={{ fontSize: '18px', fontWeight: 800, color: '#334155', margin: '0 0 4px 0' }}>
+                {activeTool ? activeTool.title : 'File Converter'}
+              </h1>
+              <p style={{ fontSize: '13px', color: '#64748b', margin: 0 }}>
+                {activeTool ? activeTool.desc : 'Easily convert files from one format to another, online.'}
+              </p>
+            </div>
+
+            {/* Dropzone Container */}
+            <div style={{ backgroundColor: '#ffffff', border: '2px dashed #c7d2fe', borderRadius: '16px', padding: '28px 16px', textAlign: 'center', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '32px' }}>
+              <label style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '14px 32px', backgroundColor: '#5b6cf9', color: '#ffffff', fontWeight: 'bold', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(91, 108, 249, 0.3)', cursor: 'pointer', fontSize: '15px' }}>
+                <span>Choose Files</span>
+                <ChevronDown size={18} />
+                <input 
+                  type="file" 
+                  multiple 
+                  onChange={(e) => { setFiles(e.target.files); setStatusMsg(''); }} 
+                  style={{ display: 'none' }} 
+                />
+              </label>
+
+              <p style={{ fontSize: '12px', color: '#64748b', marginTop: '12px', fontWeight: 500 }}>
+                Max file size 1GB.{' '}
+                <span onClick={() => setModal('terms')} style={{ color: '#2563eb', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }}>
+                  Terms of Use
+                </span>
+              </p>
+
+              {files && files.length > 0 && (
+                <div style={{ marginTop: '16px', padding: '10px', backgroundColor: '#eff6ff', color: '#1d4ed8', fontSize: '12px', fontWeight: 600, borderRadius: '8px', border: '1px solid #dbeafe' }}>
+                  ✓ {files.length} file(s) ready: {files[0].name}
+                </div>
+              )}
+
+              {files && files.length > 0 && (
+                <button 
+                  onClick={handleProcess} 
+                  disabled={loading} 
+                  style={{ width: '100%', marginTop: '16px', padding: '12px', backgroundColor: '#2563eb', color: '#ffffff', fontWeight: 'bold', borderRadius: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', border: 'none', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
+                >
+                  {loading ? 'Processing...' : 'Convert Now'} <Download size={16} />
+                </button>
+              )}
+
+              {statusMsg && (
+                <p style={{ fontSize: '12px', color: '#059669', fontWeight: 'bold', marginTop: '12px' }}>{statusMsg}</p>
+              )}
+            </div>
+
+            {/* Feature Icons Section */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', textAlign: 'center', margin: '40px 0' }}>
+              <div>
+                <div style={{ width: '40px', height: '40px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto' }}>
+                  <FileText size={20} />
+                </div>
+                <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 4px 0' }}>Universal Format Support</h3>
+                <p style={{ fontSize: '12px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
+                  Our multi-engine pipeline accommodates documents, videos, music tracks, and graphic files without requiring software installs.
+                </p>
+              </div>
+
+              <div>
+                <div style={{ width: '40px', height: '40px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto' }}>
+                  <Cloud size={20} />
+                </div>
+                <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 4px 0' }}>Fully Cross-Platform</h3>
+                <p style={{ fontSize: '12px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
+                  Operates effortlessly across iOS, Android, macOS, Linux, and Windows straight from modern mobile and desktop browsers.
+                </p>
+              </div>
+
+              <div>
+                <div style={{ width: '40px', height: '40px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto' }}>
+                  <Shield size={20} />
+                </div>
+                <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 4px 0' }}>Client-Side Data Privacy</h3>
+                <p style={{ fontSize: '12px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
+                  All computations execute locally on your physical device memory. No files are tracked, archived, or transferred to cloud disks.
+                </p>
               </div>
             </div>
-          </div>
 
-          <h2 style={{ fontSize: '24px', fontWeight: 900, color: '#0f172a', letterSpacing: '-0.5px', textTransform: 'uppercase', margin: '0 0 2px 0' }}>
-            QUICK CONVERT <span style={{ color: '#2563eb' }}>PRO</span>
-          </h2>
-          <p style={{ fontSize: '10px', color: '#64748b', fontWeight: 800, letterSpacing: '2.5px', textTransform: 'uppercase', margin: '0 0 18px 0' }}>
-            CONVERT • EDIT • MERGE • MORE
-          </p>
-          
-          <h1 style={{ fontSize: '18px', fontWeight: 800, color: '#334155', margin: '0 0 4px 0' }}>
-            {activeTool ? activeTool.title : 'File Converter'}
-          </h1>
-          <p style={{ fontSize: '13px', color: '#64748b', margin: 0 }}>
-            {activeTool ? activeTool.desc : 'Easily convert files from one format to another, online.'}
-          </p>
-        </div>
+            {/* Security Box */}
+            <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '32px' }}>
+              <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 8px 0' }}>Uncompromising User Security</h3>
+              <p style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.6, marginBottom: '16px' }}>
+                We hold document confidentiality to the highest standard. Processing happens in-memory without remote persistence or tracking.
+              </p>
 
-        {/* Dropzone Container */}
-        <div style={{ backgroundColor: '#ffffff', border: '2px dashed #c7d2fe', borderRadius: '16px', padding: '28px 16px', textAlign: 'center', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '32px' }}>
-          <label style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '14px 32px', backgroundColor: '#5b6cf9', color: '#ffffff', fontWeight: 'bold', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(91, 108, 249, 0.3)', cursor: 'pointer', fontSize: '15px' }}>
-            <span>Choose Files</span>
-            <ChevronDown size={18} />
-            <input 
-              type="file" 
-              multiple 
-              onChange={(e) => { setFiles(e.target.files); setStatusMsg(''); }} 
-              style={{ display: 'none' }} 
-            />
-          </label>
+              <button 
+                onClick={() => setModal('security')} 
+                style={{ width: '100%', padding: '10px', marginBottom: '20px', border: '1px solid #2563eb', color: '#2563eb', backgroundColor: 'transparent', fontSize: '12px', fontWeight: 'bold', borderRadius: '8px', cursor: 'pointer' }}
+              >
+                Explore our security specifications
+              </button>
 
-          <p style={{ fontSize: '12px', color: '#64748b', marginTop: '12px', fontWeight: 500 }}>
-            Max file size 1GB.{' '}
-            <span onClick={() => setModal('terms')} style={{ color: '#2563eb', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }}>
-              Terms of Use
-            </span>
-          </p>
-
-          {files && files.length > 0 && (
-            <div style={{ marginTop: '16px', padding: '10px', backgroundColor: '#eff6ff', color: '#1d4ed8', fontSize: '12px', fontWeight: 600, borderRadius: '8px', border: '1px solid #dbeafe' }}>
-              ✓ {files.length} file(s) ready: {files[0].name}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '12px', color: '#334155' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Lock size={16} color="#64748b" />
+                  <span>Zero-Storage Client Architecture</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Server size={16} color="#64748b" />
+                  <span>Sandboxed Browser Execution</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <KeyRound size={16} color="#64748b" />
+                  <span>Full Local Control & Memory Purge</span>
+                </div>
+              </div>
             </div>
-          )}
-
-          {files && files.length > 0 && (
-            <button 
-              onClick={handleProcess} 
-              disabled={loading} 
-              style={{ width: '100%', marginTop: '16px', padding: '12px', backgroundColor: '#2563eb', color: '#ffffff', fontWeight: 'bold', borderRadius: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', border: 'none', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
-            >
-              {loading ? 'Processing...' : 'Convert Now'} <Download size={16} />
-            </button>
-          )}
-
-          {statusMsg && (
-            <p style={{ fontSize: '12px', color: '#059669', fontWeight: 'bold', marginTop: '12px' }}>{statusMsg}</p>
-          )}
-        </div>
-
-        {/* 3. Feature Icons Section */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', textAlign: 'center', margin: '40px 0' }}>
-          <div>
-            <div style={{ width: '40px', height: '40px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto' }}>
-              <FileText size={20} />
+          </>
+        ) : (
+                <article style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '24px 20px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginBottom: '36px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: '#2563eb', backgroundColor: '#eff6ff', padding: '4px 10px', borderRadius: '9999px', textTransform: 'uppercase' }}>
+                Tech & File Conversion
+              </span>
+              <span style={{ fontSize: '12px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                4 min read
+              </span>
             </div>
-            <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 4px 0' }}>Universal Format Support</h3>
-            <p style={{ fontSize: '12px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
-              Our multi-engine pipeline accommodates documents, videos, music tracks, and graphic files without requiring software installs.
+
+            <h1 style={{ fontSize: '22px', fontWeight: 900, color: '#0f172a', lineHeight: 1.35, margin: '0 0 14px 0' }}>
+              The Ultimate Guide to Free File Conversion Online: Video, Audio, Images & PDFs (2026 Edition)
+            </h1>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '16px', marginBottom: '20px', fontSize: '12px', color: '#64748b' }}>
+              <span style={{ fontWeight: 600, color: '#2563eb' }}>The Pavi Studio</span>
+              <span>August 2026</span>
+            </div>
+
+            {/* Premium Article Visual Banner */}
+            <div style={{ width: '100%', height: '170px', borderRadius: '16px', background: 'linear-gradient(135deg, #1e3a8a, #3b82f6, #06b6d4)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#ffffff', padding: '16px', boxSizing: 'border-box', textAlign: 'center', marginBottom: '22px', boxShadow: '0 6px 16px rgba(37,99,235,0.2)' }}>
+              <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 800 }}>MP4 ➔ MP3</span>
+                <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 800 }}>JPG ➔ PDF</span>
+                <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 800 }}>HEIC ➔ JPG</span>
+              </div>
+              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 800 }}>Lightning-Fast In-Browser Conversions</h3>
+              <p style={{ margin: '4px 0 0 0', fontSize: '11px', opacity: 0.9 }}>100% Privacy Protected • Zero Cloud Server Storage</p>
+            </div>
+
+            <p style={{ fontSize: '13px', color: '#334155', lineHeight: 1.7, margin: '0 0 16px 0' }}>
+              Finding a fast, reliable, and secure online file converter is one of the most frequent challenges users face today. Whether you need to rip an MP3 track from an MP4 video lecture, bundle multi-page JPG receipts into an organized PDF report, or transcode Apple's modern HEIC pictures into standard JPG files, <strong>QuickConvert.pro</strong> makes the workflow completely seamless.
             </p>
-          </div>
 
-          <div>
-            <div style={{ width: '40px', height: '40px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto' }}>
-              <Cloud size={20} />
-            </div>
-            <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 4px 0' }}>Fully Cross-Platform</h3>
-            <p style={{ fontSize: '12px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
-              Operates effortlessly across iOS, Android, macOS, Linux, and Windows straight from modern mobile and desktop browsers.
+            <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', margin: '20px 0 8px 0' }}>
+              1. How to Convert MP4 Videos to MP3 Audio in Seconds
+            </h2>
+            <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.7, margin: '0 0 12px 0' }}>
+              Converting video to audio is essential for podcasters, students, and music creators. Unlike legacy conversion portals that make you wait in long server queues, QuickConvert.pro processes the audio stream directly inside your browser cache.
             </p>
-          </div>
+            <ul style={{ margin: '0 0 18px 0', paddingLeft: '20px', fontSize: '13px', color: '#475569', lineHeight: 1.8 }}>
+              <li><strong>Step 1:</strong> Select <em>Video to MP3</em> or <em>MP4 to MP3</em> from the tool registry.</li>
+              <li><strong>Step 2:</strong> Tap <em>Choose Files</em> to pick your clip (up to 1GB supported).</li>
+              <li><strong>Step 3:</strong> Hit <em>Convert Now</em> to instantly download your audio track.</li>
+            </ul>
 
-          <div>
-            <div style={{ width: '40px', height: '40px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto' }}>
-              <Shield size={20} />
-            </div>
-            <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 4px 0' }}>Client-Side Data Privacy</h3>
-            <p style={{ fontSize: '12px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
-              All computations execute locally on your physical device memory. No files are tracked, archived, or transferred to cloud disks.
+            <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', margin: '20px 0 8px 0' }}>
+              2. Merging JPG and PNG Photos into a Single PDF
+            </h2>
+            <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.7, margin: '0 0 18px 0' }}>
+              Government exam forms, academic assignments, and expense invoices frequently require multiple photos stitched into a unified PDF file. With our integrated <em>Image to PDF</em> engine, simply multi-select your pictures and generate a clean, printable PDF document instantaneously.
             </p>
-          </div>
-        </div>
 
-        {/* 4. Security Framework Box */}
-        <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '32px' }}>
-          <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 8px 0' }}>Uncompromising User Security</h3>
-          <p style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.6, marginBottom: '16px' }}>
-            We hold document confidentiality to the highest standard. Processing happens in-memory without remote persistence or tracking.
-          </p>
-
-          <button 
-            onClick={() => setModal('security')} 
-            style={{ width: '100%', padding: '10px', marginBottom: '20px', border: '1px solid #2563eb', color: '#2563eb', backgroundColor: 'transparent', fontSize: '12px', fontWeight: 'bold', borderRadius: '8px', cursor: 'pointer' }}
-          >
-            Explore our security specifications
-          </button>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '12px', color: '#334155' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Lock size={16} color="#64748b" />
-              <span>Zero-Storage Client Architecture</span>
+            <div style={{ textAlign: 'center', marginTop: '24px' }}>
+              <button 
+                onClick={() => { setCurrentView('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                style={{ padding: '12px 28px', backgroundColor: '#2563eb', color: '#ffffff', fontWeight: 800, fontSize: '13px', borderRadius: '10px', border: 'none', cursor: 'pointer', boxShadow: '0 4px 10px rgba(37,99,235,0.3)' }}
+              >
+                Launch Free Converters Now
+              </button>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Server size={16} color="#64748b" />
-              <span>Sandboxed Browser Execution</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <KeyRound size={16} color="#64748b" />
-              <span>Full Local Control & Memory Purge</span>
-            </div>
-          </div>
-        </div>
+          </article>
+        )}
 
-        {/* 5. FAQs Section */}
+        {/* FAQs Section */}
         <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '36px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
             <HelpCircle size={20} color="#2563eb" />
@@ -345,93 +419,70 @@ export default function App() {
           </div>
         </div>
       </main>
-                         
-      {/* 6. Footer with Centered Last Three Lines */}
-      <footer style={{ backgroundColor: '#102a43', color: '#f1f5f9', padding: '40px 20px', marginTop: 'auto' }}>
-        <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '28px' }}>
-          <div>
-            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Video Converter</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
-              <span onClick={() => selectTool('mp4-converter')} style={{ cursor: 'pointer' }}>MP4 Converter</span>
-              <span onClick={() => selectTool('video-to-gif')} style={{ cursor: 'pointer' }}>Video to GIF</span>
-              <span onClick={() => selectTool('mov-to-mp4')} style={{ cursor: 'pointer' }}>MOV to MP4</span>
-              <span onClick={() => selectTool('video-converter')} style={{ cursor: 'pointer' }}>Video Converter</span>
+            {/* 6. Comprehensive Footer with Social Links & Centered Branding */}
+      <footer style={{ backgroundColor: '#0f1f2e', color: '#f1f5f9', padding: '44px 20px 32px 20px', marginTop: 'auto' }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          
+          {/* Top Brand & Social Links Section */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '14px', borderBottom: '1px solid #1e354a', paddingBottom: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'linear-gradient(145deg, #0ea5e9, #2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ color: '#eab308', fontWeight: 900, fontSize: '14px', lineHeight: 1 }}>⇄</span>
+              </div>
+              <span style={{ fontWeight: 900, color: '#ffffff', fontSize: '19px', letterSpacing: '-0.5px' }}>QuickConvert<span style={{ color: '#38bdf8' }}>.pro</span></span>
+            </div>
+
+            {/* Social Media Icons */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '4px' }}>
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#1e354a', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', textDecoration: 'none' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              </a>
+              <a href="https://facebook.com" target="_blank" rel="noreferrer" style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#1e354a', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', textDecoration: 'none' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+              </a>
+              <a href="https://x.com" target="_blank" rel="noreferrer" style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#1e354a', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', textDecoration: 'none' }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noreferrer" style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#1e354a', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', textDecoration: 'none' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+              </a>
             </div>
           </div>
 
-          <div>
-            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Audio Converter</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
-              <span onClick={() => selectTool('mp3-converter')} style={{ cursor: 'pointer' }}>MP3 Converter</span>
-              <span onClick={() => selectTool('mp4-to-mp3')} style={{ cursor: 'pointer' }}>MP4 to MP3</span>
-              <span onClick={() => selectTool('video-to-mp3')} style={{ cursor: 'pointer' }}>Video to MP3</span>
-              <span onClick={() => selectTool('audio-converter')} style={{ cursor: 'pointer' }}>Audio Converter</span>
+          {/* Company & Categories & Legal Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', textAlign: 'center' }}>
+            <div>
+              <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff', margin: '0 0 12px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Company</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px', color: '#94a3b8' }}>
+                <span onClick={() => setModal('about')} style={{ cursor: 'pointer' }}>About</span>
+                <span onClick={() => { setCurrentView('blog'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ cursor: 'pointer', color: '#38bdf8', fontWeight: 600 }}>Blog</span>
+                <a href="mailto:pavanibevara045@gmail.com" style={{ color: '#94a3b8', textDecoration: 'none' }}>Contact</a>
+                <span onClick={() => setModal('security')} style={{ cursor: 'pointer' }}>Security</span>
+              </div>
+            </div>
+
+            <div>
+              <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff', margin: '0 0 12px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Categories</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px', color: '#94a3b8' }}>
+                <span onClick={() => selectTool('mp4-converter')} style={{ cursor: 'pointer' }}>Video</span>
+                <span onClick={() => selectTool('mp3-converter')} style={{ cursor: 'pointer' }}>Audio</span>
+                <span onClick={() => selectTool('jpg-to-pdf')} style={{ cursor: 'pointer' }}>Images</span>
+                <span onClick={() => selectTool('pdf-to-word')} style={{ cursor: 'pointer' }}>Document</span>
+              </div>
+            </div>
+
+            <div>
+              <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff', margin: '0 0 12px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Legal</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px', color: '#94a3b8' }}>
+                <span onClick={() => setModal('privacy')} style={{ cursor: 'pointer' }}>Privacy Policy</span>
+                <span onClick={() => setModal('terms')} style={{ cursor: 'pointer' }}>Terms of Use</span>
+                <span onClick={() => setModal('security')} style={{ cursor: 'pointer' }}>Data Safety</span>
+              </div>
             </div>
           </div>
 
-          <div>
-            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Image Converter</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
-              <span onClick={() => selectTool('jpg-to-pdf')} style={{ cursor: 'pointer' }}>JPG to PDF</span>
-              <span onClick={() => selectTool('pdf-to-jpg')} style={{ cursor: 'pointer' }}>PDF to JPG</span>
-              <span onClick={() => selectTool('heic-to-jpg')} style={{ cursor: 'pointer' }}>HEIC to JPG</span>
-              <span onClick={() => selectTool('image-to-pdf')} style={{ cursor: 'pointer' }}>Image to PDF</span>
-              <span onClick={() => selectTool('image-converter')} style={{ cursor: 'pointer' }}>Image Converter</span>
-            </div>
-          </div>
-
-          <div>
-            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Document & Ebook</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
-              <span onClick={() => selectTool('pdf-to-word')} style={{ cursor: 'pointer' }}>PDF to WORD</span>
-              <span onClick={() => selectTool('epub-to-pdf')} style={{ cursor: 'pointer' }}>EPUB to PDF</span>
-              <span onClick={() => selectTool('epub-to-mobi')} style={{ cursor: 'pointer' }}>EPUB to MOBI</span>
-              <span onClick={() => selectTool('document-converter')} style={{ cursor: 'pointer' }}>Document Converter</span>
-            </div>
-          </div>
-
-          <div>
-            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Archive & Time</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
-              <span onClick={() => selectTool('rar-to-zip')} style={{ cursor: 'pointer' }}>RAR to Zip</span>
-              <span onClick={() => selectTool('pst-to-est')} style={{ cursor: 'pointer' }}>PST to EST</span>
-              <span onClick={() => selectTool('cst-to-est')} style={{ cursor: 'pointer' }}>CST to EST</span>
-              <span onClick={() => selectTool('archive-converter')} style={{ cursor: 'pointer' }}>Archive Converter</span>
-            </div>
-          </div>
-
-          <div>
-            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Unit Converter</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
-              <span onClick={() => selectTool('lbs-to-kg')} style={{ cursor: 'pointer' }}>Lbs to Kg</span>
-              <span onClick={() => selectTool('kg-to-lbs')} style={{ cursor: 'pointer' }}>Kg to Lbs</span>
-              <span onClick={() => selectTool('feet-to-meters')} style={{ cursor: 'pointer' }}>Feet to Meters</span>
-              <span onClick={() => selectTool('unit-converter')} style={{ cursor: 'pointer' }}>Unit Converter</span>
-            </div>
-          </div>
-
-          <div>
-            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', margin: '0 0 10px 0' }}>Web Apps</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1' }}>
-              <span onClick={() => selectTool('collage-maker')} style={{ cursor: 'pointer' }}>Collage Maker</span>
-              <span onClick={() => selectTool('image-resizer')} style={{ cursor: 'pointer' }}>Image Resizer</span>
-              <span onClick={() => selectTool('crop-image')} style={{ cursor: 'pointer' }}>Crop Image</span>
-              <span onClick={() => selectTool('color-picker')} style={{ cursor: 'pointer' }}>Color Picker</span>
-            </div>
-          </div>
-
-          {/* Legal Links */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#cbd5e1', borderTop: '1px solid #334e68', paddingTop: '16px' }}>
-            <span onClick={() => setModal('about')} style={{ cursor: 'pointer' }}>About Us</span>
-            <span onClick={() => setModal('blog')} style={{ cursor: 'pointer' }}>Blog</span>
-            <span onClick={() => setModal('terms')} style={{ cursor: 'pointer' }}>Terms</span>
-            <span onClick={() => setModal('privacy')} style={{ cursor: 'pointer' }}>Privacy</span>
-            <a href="mailto:pavanibevara045@gmail.com" style={{ color: '#cbd5e1', textDecoration: 'none' }}>Contact</a>
-          </div>
-
-          {/* Center-Adjusted Last Three Lines */}
-          <div style={{ borderTop: '1px solid #334e68', paddingTop: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '8px' }}>
-            {/* 1st Line: Logo + QuickConvert.pro */}
+          {/* Centered Footer Branding (Last 3 Lines) */}
+          <div style={{ borderTop: '1px solid #1e354a', paddingTop: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
               <div style={{ width: '22px', height: '22px', borderRadius: '6px', background: 'linear-gradient(145deg, #0ea5e9, #2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{ color: '#eab308', fontWeight: 900, fontSize: '11px', lineHeight: 1 }}>⇄</span>
@@ -439,10 +490,8 @@ export default function App() {
               <span style={{ fontWeight: 'bold', color: '#ffffff', fontSize: '14px' }}>QuickConvert.pro</span>
             </div>
 
-            {/* 2nd Line: Copyright */}
-            <span style={{ color: '#94a3b8', fontSize: '11px' }}>© 2026 QuickConvert.pro. All rights reserved.</span>
+            <span style={{ color: '#94a3b8', fontSize: '11px' }}>Copyright © 2026 QuickConvert.pro. All rights reserved.</span>
 
-            {/* 3rd Line: Created by The Pavi Studio */}
             <span style={{ color: '#818cf8', fontWeight: 700, fontSize: '12px' }}>Created by The Pavi Studio</span>
           </div>
         </div>
@@ -463,10 +512,10 @@ export default function App() {
               {modal === 'terms' && <p><strong>Terms of Service:</strong> Users retain 100% intellectual property ownership of uploaded files. Processing occurs solely on client hardware.</p>}
               {modal === 'privacy' && <p><strong>Privacy Guarantee:</strong> We do not log or store files on remote servers.</p>}
               {modal === 'security' && <p><strong>Security:</strong> Sandboxed HTML5 WebAssembly execution with instant memory purge.</p>}
-              {modal === 'blog' && <p><strong>Blog:</strong> Discover how WebAssembly and in-browser Canvas enable instant client-side file conversions.</p>}
               {modal === 'menu' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontWeight: 500 }}>
-                  <span onClick={() => { setSelectedToolKey(null); setModal(null); }} style={{ cursor: 'pointer', color: '#2563eb' }}>🏠 Home</span>
+                  <span onClick={() => { setCurrentView('home'); setSelectedToolKey(null); setModal(null); }} style={{ cursor: 'pointer', color: '#2563eb' }}>🏠 Home Converter</span>
+                  <span onClick={() => { setCurrentView('blog'); setModal(null); }} style={{ cursor: 'pointer', color: '#2563eb' }}>📰 Blog & Guides</span>
                   <span onClick={() => setModal('about')} style={{ cursor: 'pointer' }}>ℹ️ About Us</span>
                   <a href="mailto:pavanibevara045@gmail.com" style={{ color: '#2563eb', textDecoration: 'none' }}>📧 Email Developer</a>
                 </div>
@@ -477,4 +526,4 @@ export default function App() {
       )}
     </div>
   );
-}
+                  }
