@@ -186,7 +186,7 @@ export default function App() {
     setStatusMsg('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  return (
+   return (
     <div className="min-h-screen bg-[#fafbfc] text-slate-800 flex flex-col font-sans">
       {/* 1. Header with Logo & Name */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 py-2.5 shadow-sm">
@@ -535,6 +535,4 @@ export default function App() {
       )}
     </div>
   );
-}
-
-        
+          }
