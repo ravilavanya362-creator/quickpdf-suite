@@ -18,7 +18,8 @@ import {
   HelpCircle,
   Clock,
   Calendar,
-  User
+  User,
+  BookOpen
 } from 'lucide-react';
 
 interface ToolItem {
@@ -63,6 +64,27 @@ const TOOL_REGISTRY: Record<string, ToolItem> = {
   'color-picker': { id: 'color-picker', name: 'Color Picker', title: 'Color Code & Palette Finder', desc: 'Pick colors visually and copy HEX or RGB codes instantly.', cat: 'WebApps', targetExt: 'TXT', acceptMime: '' }
 };
 
+const BLOG_POSTS = [
+  {
+    id: 'ultimate-guide-image-compression',
+    title: 'The Ultimate Guide: How to Convert and Compress Images Online Without Losing Quality',
+    category: 'Guides',
+    readTime: '4 min read',
+    date: 'August 2026',
+    excerpt: 'Learn how to convert and compress JPG, PNG, and WebP images instantly online for free without losing resolution or detail.',
+    bannerGradient: 'linear-gradient(135deg, #1e3a8a, #3b82f6, #06b6d4)'
+  },
+  {
+    id: 'mp4-to-mp3-audio-extraction',
+    title: 'How to Extract Crystal-Clear MP3 Audio from MP4 Videos Instantly',
+    category: 'Trends',
+    readTime: '3 min read',
+    date: 'August 2026',
+    excerpt: 'Extract background songs, lectures, and voice notes from video files directly inside your browser with zero cloud uploads.',
+    bannerGradient: 'linear-gradient(135deg, #7c3aed, #db2777, #f59e0b)'
+  }
+];
+
 const FAQ_LIST = [
   {
     q: 'Is QuickConvert.pro safe to use for sensitive documents?',
@@ -85,7 +107,8 @@ export default function App() {
   const [statusMsg, setStatusMsg] = useState('');
   const [modal, setModal] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [currentView, setCurrentView] = useState<'home' | 'blog'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'blog-list' | 'blog-detail'>('home');
+  const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
 
   const activeTool = selectedToolKey ? TOOL_REGISTRY[selectedToolKey] : null;
 
@@ -173,10 +196,10 @@ export default function App() {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <button 
-              onClick={() => { setCurrentView(currentView === 'home' ? 'blog' : 'home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              style={{ fontSize: '12px', backgroundColor: currentView === 'blog' ? '#2563eb' : '#eff6ff', color: currentView === 'blog' ? '#ffffff' : '#2563eb', padding: '6px 12px', borderRadius: '9999px', border: 'none', fontWeight: 700, cursor: 'pointer' }}
+              onClick={() => { setCurrentView('blog-list'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              style={{ fontSize: '12px', backgroundColor: currentView !== 'home' ? '#2563eb' : '#eff6ff', color: currentView !== 'home' ? '#ffffff' : '#2563eb', padding: '6px 12px', borderRadius: '9999px', border: 'none', fontWeight: 700, cursor: 'pointer' }}
             >
-              {currentView === 'home' ? 'Blog' : 'Converter'}
+              Blog
             </button>
             <a href="mailto:pavanibevara045@gmail.com" style={{ fontSize: '12px', backgroundColor: '#f1f5f9', color: '#334155', padding: '6px 12px', borderRadius: '9999px', textDecoration: 'none', fontWeight: 600 }}>
               Contact
@@ -188,7 +211,7 @@ export default function App() {
       {/* 2. Main Content Body */}
       <main style={{ flex: 1, maxWidth: '600px', width: '100%', margin: '0 auto', padding: '24px 16px', boxSizing: 'border-box' }}>
         
-        {currentView === 'home' ? (
+        {currentView === 'home' && (
           <>
             {activeTool && (
               <button 
@@ -327,85 +350,103 @@ export default function App() {
               </div>
             </div>
           </>
-        ) : (
-              <article style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '24px 20px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginBottom: '36px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#2563eb', backgroundColor: '#eff6ff', padding: '4px 10px', borderRadius: '9999px', textTransform: 'uppercase' }}>
-                Tech & File Conversion
-              </span>
-              <span style={{ fontSize: '12px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Clock size={13} /> 4 min read
-              </span>
+        )}
+                {currentView === 'blog-list' && (
+          <div>
+            <button 
+              onClick={() => setCurrentView('home')}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#2563eb', fontWeight: 'bold', marginBottom: '16px', backgroundColor: '#eff6ff', padding: '6px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}
+            >
+              <ArrowLeft size={14} /> Back to Home
+            </button>
+
+            <div style={{ marginBottom: '24px' }}>
+              <h1 style={{ fontSize: '24px', fontWeight: 900, color: '#0f172a', margin: '0 0 6px 0' }}>QuickConvert Blog & Guides</h1>
+              <p style={{ fontSize: '13px', color: '#64748b', margin: 0 }}>Discover expert tips, tutorials, and file conversion guides.</p>
             </div>
 
-            <h1 style={{ fontSize: '22px', fontWeight: 900, color: '#0f172a', lineHeight: 1.35, margin: '0 0 14px 0' }}>
-              The Ultimate Guide: How to Convert and Compress Images Online Without Losing Quality
-            </h1>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '16px', marginBottom: '20px', fontSize: '12px', color: '#64748b' }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}><User size={14} color="#2563eb" /> The Pavi Studio</span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Calendar size={14} /> August 2026</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {BLOG_POSTS.map((post) => (
+                <div 
+                  key={post.id}
+                  onClick={() => { setSelectedBlogId(post.id); setCurrentView('blog-detail'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', overflow: 'hidden', cursor: 'pointer', boxShadow: '0 2px 5px rgba(0,0,0,0.03)', transition: 'transform 0.2s' }}
+                >
+                  <div style={{ width: '100%', height: '120px', background: post.bannerGradient, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', padding: '12px', boxSizing: 'border-box' }}>
+                    <BookOpen size={32} opacity={0.8} />
+                  </div>
+                  <div style={{ padding: '16px' }}>
+                    <span style={{ fontSize: '10px', fontWeight: 800, color: '#2563eb', backgroundColor: '#eff6ff', padding: '3px 8px', borderRadius: '6px', textTransform: 'uppercase' }}>
+                      {post.category}
+                    </span>
+                    <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', margin: '8px 0 6px 0', lineHeight: 1.4 }}>
+                      {post.title}
+                    </h2>
+                    <p style={{ fontSize: '12px', color: '#64748b', margin: '0 0 12px 0', lineHeight: 1.5 }}>
+                      {post.excerpt}
+                    </p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px', color: '#94a3b8' }}>
+                      <span>{post.date}</span>
+                      <span style={{ color: '#2563eb', fontWeight: 700 }}>Read Article →</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
+          </div>
+        )}
 
-            {/* Premium Article Visual Banner 1 */}
-            <div style={{ width: '100%', height: '170px', borderRadius: '16px', background: 'linear-gradient(135deg, #1e3a8a, #3b82f6, #06b6d4)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#ffffff', padding: '16px', boxSizing: 'border-box', textAlign: 'center', marginBottom: '22px', boxShadow: '0 6px 16px rgba(37,99,235,0.2)' }}>
-              <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-                <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 800 }}>PNG ➔ WEBP</span>
-                <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 800 }}>JPG ➔ PDF</span>
-                <span style={{ background: 'rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 800 }}>COMPRESS 100%</span>
+        {currentView === 'blog-detail' && (
+          <div>
+            <button 
+              onClick={() => setCurrentView('blog-list')}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#2563eb', fontWeight: 'bold', marginBottom: '16px', backgroundColor: '#eff6ff', padding: '6px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}
+            >
+              <ArrowLeft size={14} /> Back to Blog List
+            </button>
+
+            <article style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '20px', padding: '24px 20px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', marginBottom: '36px' }}>
+              <h1 style={{ fontSize: '22px', fontWeight: 900, color: '#0f172a', lineHeight: 1.35, margin: '0 0 14px 0' }}>
+                {selectedBlogId === 'mp4-to-mp3-audio-extraction' 
+                  ? 'How to Extract Crystal-Clear MP3 Audio from MP4 Videos Instantly' 
+                  : 'The Ultimate Guide: How to Convert and Compress Images Online Without Losing Quality'}
+              </h1>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '16px', marginBottom: '20px', fontSize: '12px', color: '#64748b' }}>
+                <span style={{ fontWeight: 600, color: '#2563eb' }}>The Pavi Studio</span>
+                <span>August 2026</span>
               </div>
-              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 800 }}>Lossless Online Image Compression</h3>
-              <p style={{ margin: '4px 0 0 0', fontSize: '11px', opacity: 0.9 }}>Optimized for High SEO Performance & Speed</p>
-            </div>
 
-            <p style={{ fontSize: '13px', color: '#334155', lineHeight: 1.7, margin: '0 0 16px 0' }}>
-              In the modern digital landscape, image quality and website performance go hand in hand. High-resolution images make web pages and portfolios look professional, but large file sizes cause slow loading times, poor search rankings, and bad user experience. Using an efficient, browser-based conversion tool ensures you get optimized file weights without visible pixelation or color distortion.
-            </p>
-
-            <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', margin: '20px 0 8px 0' }}>
-              Why Image Optimization and Format Conversion Matter
-            </h2>
-            <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.7, margin: '0 0 12px 0' }}>
-              Every digital platform demands specific formats and sizes:
-            </p>
-            <ul style={{ margin: '0 0 18px 0', paddingLeft: '20px', fontSize: '13px', color: '#475569', lineHeight: 1.8 }}>
-              <li><strong>JPG / JPEG:</strong> Best for complex photographs and multi-color images due to balanced compression.</li>
-              <li><strong>PNG:</strong> Ideal for graphics, logos, and screenshots that need transparent backgrounds and sharp borders.</li>
-              <li><strong>WebP:</strong> Google's modern format providing up to 30% superior compression over traditional PNGs and JPGs without dropping visual clarity.</li>
-            </ul>
-
-            {/* Related Visual Graphic Box */}
-            <div style={{ display: 'flex', gap: '12px', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '14px', alignItems: 'center', marginBottom: '20px' }}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Shield size={24} color="#2563eb" />
+              <div style={{ width: '100%', height: '170px', borderRadius: '16px', background: selectedBlogId === 'mp4-to-mp3-audio-extraction' ? 'linear-gradient(135deg, #7c3aed, #db2777)' : 'linear-gradient(135deg, #1e3a8a, #3b82f6)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#ffffff', padding: '16px', boxSizing: 'border-box', textAlign: 'center', marginBottom: '22px' }}>
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 800 }}>100% Secure In-Browser Processing</h3>
+                <p style={{ margin: '4px 0 0 0', fontSize: '11px', opacity: 0.9 }}>QuickConvert.pro Technical Guide</p>
               </div>
-              <div>
-                <h4 style={{ margin: '0 0 2px 0', fontSize: '13px', fontWeight: 800, color: '#0f172a' }}>Client-Side Browser Security</h4>
-                <p style={{ margin: 0, fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>All temporary files process securely through local memory and delete automatically.</p>
+
+              <p style={{ fontSize: '13px', color: '#334155', lineHeight: 1.7, margin: '0 0 16px 0' }}>
+                {selectedBlogId === 'mp4-to-mp3-audio-extraction'
+                  ? 'Extracting audio from video clips is essential for creators, students, and podcast enthusiasts. QuickConvert.pro provides a direct, lightning-fast client-side pipeline to rip audio tracks with zero server lag.'
+                  : 'In the modern digital landscape, image quality and website performance go hand in hand. High-resolution images make web pages and portfolios look professional, but large file sizes cause slow loading times. Using an efficient tool ensures you get optimized file weights without losing clarity.'}
+              </p>
+
+              <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', margin: '20px 0 8px 0' }}>
+                Step-by-Step Execution Guide
+              </h2>
+              <ol style={{ margin: '0 0 18px 0', paddingLeft: '20px', fontSize: '13px', color: '#475569', lineHeight: 1.8 }}>
+                <li>Select your desired tool from the homepage registry.</li>
+                <li>Upload your target file securely from local memory.</li>
+                <li>Tap convert and download your processed result instantly.</li>
+              </ol>
+
+              <div style={{ textAlign: 'center', marginTop: '24px' }}>
+                <button 
+                  onClick={() => { setCurrentView('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  style={{ padding: '12px 28px', backgroundColor: '#2563eb', color: '#ffffff', fontWeight: 800, fontSize: '13px', borderRadius: '10px', border: 'none', cursor: 'pointer', boxShadow: '0 4px 10px rgba(37,99,235,0.3)' }}
+                >
+                  Try Converters Now
+                </button>
               </div>
-            </div>
-
-            <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', margin: '20px 0 8px 0' }}>
-              Step-by-Step: Converting Files Easily on QuickConvert.pro
-            </h2>
-            <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.7, margin: '0 0 12px 0' }}>
-              Converting and resizing files takes only three basic steps directly within your browser:
-            </p>
-            <ol style={{ margin: '0 0 18px 0', paddingLeft: '20px', fontSize: '13px', color: '#475569', lineHeight: 1.8 }}>
-              <li><strong>Select and Upload Your Asset:</strong> Drag and drop your source file into the tool interface.</li>
-              <li><strong>Choose Output Settings:</strong> Select the target extension and your preferred balance.</li>
-              <li><strong>Download Instantly:</strong> Click convert and save your fully optimized asset locally.</li>
-            </ol>
-
-            <div style={{ textAlign: 'center', marginTop: '24px' }}>
-              <button 
-                onClick={() => { setCurrentView('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                style={{ padding: '12px 28px', backgroundColor: '#2563eb', color: '#ffffff', fontWeight: 800, fontSize: '13px', borderRadius: '10px', border: 'none', cursor: 'pointer', boxShadow: '0 4px 10px rgba(37,99,235,0.3)' }}
-              >
-                Launch Free Converters Now
-              </button>
-            </div>
-          </article>
+            </article>
+          </div>
         )}
 
         {/* FAQs Section */}
@@ -474,7 +515,7 @@ export default function App() {
               <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff', margin: '0 0 12px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Company</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px', color: '#94a3b8' }}>
                 <span onClick={() => setModal('about')} style={{ cursor: 'pointer' }}>About</span>
-                <span onClick={() => { setCurrentView('blog'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ cursor: 'pointer', color: '#38bdf8', fontWeight: 600 }}>Blog</span>
+                <span onClick={() => { setCurrentView('blog-list'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ cursor: 'pointer', color: '#38bdf8', fontWeight: 600 }}>Blog</span>
                 <a href="mailto:pavanibevara045@gmail.com" style={{ color: '#94a3b8', textDecoration: 'none' }}>Contact</a>
                 <span onClick={() => setModal('security')} style={{ cursor: 'pointer' }}>Security</span>
               </div>
@@ -534,7 +575,7 @@ export default function App() {
               {modal === 'menu' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontWeight: 500 }}>
                   <span onClick={() => { setCurrentView('home'); setSelectedToolKey(null); setModal(null); }} style={{ cursor: 'pointer', color: '#2563eb' }}>🏠 Home Converter</span>
-                  <span onClick={() => { setCurrentView('blog'); setModal(null); }} style={{ cursor: 'pointer', color: '#2563eb' }}>📰 Blog & Guides</span>
+                  <span onClick={() => { setCurrentView('blog-list'); setModal(null); }} style={{ cursor: 'pointer', color: '#2563eb' }}>📰 Blog & Guides</span>
                   <span onClick={() => setModal('about')} style={{ cursor: 'pointer' }}>ℹ️ About Us</span>
                   <a href="mailto:pavanibevara045@gmail.com" style={{ color: '#2563eb', textDecoration: 'none' }}>📧 Email Developer</a>
                 </div>
@@ -545,5 +586,6 @@ export default function App() {
       )}
     </div>
   );
-                         }
+}
 
+      
