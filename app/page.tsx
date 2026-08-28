@@ -129,24 +129,22 @@ export default function App() {
   };
     return (
     <div style={{ minHeight: '100vh', backgroundColor: '#fafbfc', color: '#1e293b', display: 'flex', flexDirection: 'column', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
-      {/* 1. Header with Embedded Gradient Q-Logo */}
-      <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 40, padding: '10px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      {/* 1. Header with Embedded 3D Logo */}
+      <header style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 40, padding: '8px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <button onClick={() => setModal('menu')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#334155' }}>
             <Menu size={24} />
           </button>
           
-          <div onClick={() => { setSelectedToolKey(null); setFiles(null); }} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-            {/* Embedded Ultra-HD Vector Emblem */}
-            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #0284c7, #2563eb, #7c3aed)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 3px 8px rgba(37, 99, 235, 0.35)', flexShrink: 0 }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C14.07 21 15.9768 20.3045 17.5 19.1338L19.2929 20.9267C19.6834 21.3172 20.3166 21.3172 20.7071 20.9267C21.0976 20.5362 21.0976 19.903 20.7071 19.5125L18.9142 17.7196C20.218 16.1437 21 14.1627 21 12C21 7.02944 16.9706 3 12 3Z" fill="white" fillOpacity="0.25"/>
-                <path d="M15 8L18 11M18 11L15 14M18 11H9C7.34315 11 6 12.3431 6 14" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M9 16L6 13M6 13L9 10M6 13H15C16.6569 13 18 11.6569 18 10" stroke="#ffeb3b" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+          <div onClick={() => { setSelectedToolKey(null); setFiles(null); }} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+            {/* 3D App Icon */}
+            <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'linear-gradient(145deg, #0ea5e9, #2563eb, #6366f1)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(37,99,235,0.3)', flexShrink: 0 }}>
+              <div style={{ width: '22px', height: '22px', borderRadius: '50%', backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)' }}>
+                <span style={{ color: '#eab308', fontWeight: 900, fontSize: '13px', lineHeight: 1 }}>⇄</span>
+              </div>
             </div>
             
-            <span style={{ fontWeight: 900, fontSize: '20px', color: '#0f172a', letterSpacing: '-0.5px' }}>
+            <span style={{ fontWeight: 900, fontSize: '18px', color: '#0f172a', letterSpacing: '-0.5px' }}>
               QuickConvert<span style={{ color: '#2563eb' }}>.pro</span>
             </span>
           </div>
@@ -157,7 +155,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* 2. Main Hero & Converter */}
+      {/* 2. Main Hero & Brand Center */}
       <main style={{ flex: 1, maxWidth: '600px', width: '100%', margin: '0 auto', padding: '24px 16px', boxSizing: 'border-box' }}>
         {activeTool && (
           <button 
@@ -168,18 +166,35 @@ export default function App() {
           </button>
         )}
 
+        {/* Big Professional Brand Section */}
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <h1 style={{ fontSize: '28px', fontWeight: 900, color: '#0f172a', margin: '0 0 8px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
+            {/* Big 3D Logo Display */}
+            <div style={{ width: '70px', height: '70px', borderRadius: '20px', background: 'linear-gradient(145deg, #0ea5e9, #2563eb, #6366f1)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 20px rgba(37,99,235,0.35)' }}>
+              <div style={{ width: '42px', height: '42px', borderRadius: '50%', backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.15)' }}>
+                <span style={{ color: '#eab308', fontWeight: 900, fontSize: '24px', lineHeight: 1 }}>⇄</span>
+              </div>
+            </div>
+          </div>
+
+          <h2 style={{ fontSize: '24px', fontWeight: 900, color: '#0f172a', letterSpacing: '-0.5px', textTransform: 'uppercase', margin: '0 0 2px 0' }}>
+            QUICK CONVERT <span style={{ color: '#2563eb' }}>PRO</span>
+          </h2>
+          <p style={{ fontSize: '10px', color: '#64748b', fontWeight: 800, letterSpacing: '2.5px', textTransform: 'uppercase', margin: '0 0 18px 0' }}>
+            CONVERT • EDIT • MERGE • MORE
+          </p>
+          
+          <h1 style={{ fontSize: '18px', fontWeight: 800, color: '#334155', margin: '0 0 4px 0' }}>
             {activeTool ? activeTool.title : 'File Converter'}
           </h1>
-          <p style={{ fontSize: '14px', color: '#64748b', margin: 0 }}>
+          <p style={{ fontSize: '13px', color: '#64748b', margin: 0 }}>
             {activeTool ? activeTool.desc : 'Easily convert files from one format to another, online.'}
           </p>
         </div>
 
         {/* Dropzone Container */}
-        <div style={{ backgroundColor: '#ffffff', border: '2px dashed #c7d2fe', borderRadius: '16px', padding: '32px 16px', textAlign: 'center', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '32px' }}>
-          <label style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '14px 32px', backgroundColor: '#5b6cf9', color: '#ffffff', fontWeight: 'bold', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(91, 108, 249, 0.3)', cursor: 'pointer', fontSize: '16px' }}>
+        <div style={{ backgroundColor: '#ffffff', border: '2px dashed #c7d2fe', borderRadius: '16px', padding: '28px 16px', textAlign: 'center', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '32px' }}>
+          <label style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '14px 32px', backgroundColor: '#5b6cf9', color: '#ffffff', fontWeight: 'bold', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(91, 108, 249, 0.3)', cursor: 'pointer', fontSize: '15px' }}>
             <span>Choose Files</span>
             <ChevronDown size={18} />
             <input 
@@ -233,7 +248,7 @@ export default function App() {
             <div style={{ width: '40px', height: '40px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto' }}>
               <FileText size={20} />
             </div>
-            <h3 style={{ fontWeight: 'bold', fontSize: '16px', color: '#0f172a', margin: '0 0 4px 0' }}>Universal Format Support</h3>
+            <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 4px 0' }}>Universal Format Support</h3>
             <p style={{ fontSize: '12px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
               Our multi-engine pipeline accommodates documents, videos, music tracks, and graphic files without requiring software installs.
             </p>
@@ -243,7 +258,7 @@ export default function App() {
             <div style={{ width: '40px', height: '40px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto' }}>
               <Cloud size={20} />
             </div>
-            <h3 style={{ fontWeight: 'bold', fontSize: '16px', color: '#0f172a', margin: '0 0 4px 0' }}>Fully Cross-Platform</h3>
+            <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 4px 0' }}>Fully Cross-Platform</h3>
             <p style={{ fontSize: '12px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
               Operates effortlessly across iOS, Android, macOS, Linux, and Windows straight from modern mobile and desktop browsers.
             </p>
@@ -253,7 +268,7 @@ export default function App() {
             <div style={{ width: '40px', height: '40px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto' }}>
               <Shield size={20} />
             </div>
-            <h3 style={{ fontWeight: 'bold', fontSize: '16px', color: '#0f172a', margin: '0 0 4px 0' }}>Client-Side Data Privacy</h3>
+            <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 4px 0' }}>Client-Side Data Privacy</h3>
             <p style={{ fontSize: '12px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
               All computations execute locally on your physical device memory. No files are tracked, archived, or transferred to cloud disks.
             </p>
@@ -262,7 +277,7 @@ export default function App() {
 
         {/* 4. Security Framework Box */}
         <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginBottom: '32px' }}>
-          <h3 style={{ fontWeight: 'bold', fontSize: '16px', color: '#0f172a', margin: '0 0 8px 0' }}>Uncompromising User Security</h3>
+          <h3 style={{ fontWeight: 'bold', fontSize: '15px', color: '#0f172a', margin: '0 0 8px 0' }}>Uncompromising User Security</h3>
           <p style={{ fontSize: '12px', color: '#64748b', lineHeight: 1.6, marginBottom: '16px' }}>
             We hold document confidentiality to the highest standard. Processing happens in-memory without remote persistence or tracking.
           </p>
@@ -303,7 +318,7 @@ export default function App() {
           </button>
         </div>
       </main>
-            {/* 6. Footer with Vector Logo & Branding */}
+            {/* 6. Footer */}
       <footer style={{ backgroundColor: '#102a43', color: '#f1f5f9', padding: '40px 20px', marginTop: 'auto' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '28px' }}>
           <div>
@@ -390,11 +405,8 @@ export default function App() {
           <div style={{ borderTop: '1px solid #334e68', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '22px', height: '22px', borderRadius: '6px', background: 'linear-gradient(135deg, #0284c7, #2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M15 8L18 11M18 11L15 14M18 11H9C7.34315 11 6 12.3431 6 14" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M9 16L6 13M6 13L9 10M6 13H15C16.6569 13 18 11.6569 18 10" stroke="#ffeb3b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                <div style={{ width: '22px', height: '22px', borderRadius: '6px', background: 'linear-gradient(145deg, #0ea5e9, #2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ color: '#eab308', fontWeight: 900, fontSize: '11px', lineHeight: 1 }}>⇄</span>
                 </div>
                 <span style={{ fontWeight: 'bold', color: '#ffffff', fontSize: '13px' }}>QuickConvert.pro</span>
               </div>
@@ -446,4 +458,5 @@ export default function App() {
       )}
     </div>
   );
-                }
+              }
+
